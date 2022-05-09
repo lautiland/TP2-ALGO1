@@ -1,9 +1,3 @@
-def saludar(x):
-    print("Hola", x)
-
-saludar("lauti")
-
-
 def obtener_color(color):
     colores = {
         "Verde": "\x1b[32m",
