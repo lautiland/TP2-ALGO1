@@ -1,19 +1,8 @@
 import random
-
-def obtener_color(color):
-    colores = {
-        "Verde": "\x1b[32m",
-        "Amarillo": "\x1b[33m",
-        "GrisOscuro": "\x1b[90m",
-        "Defecto": "\x1b[39m"
-    }
-    return colores[color]
+import utiles
 
 def color_de_letra(letra, color):
-    return obtener_color(color) + letra.upper() + obtener_color("Defecto")
-
-def obtener_palabras_validas():
-    return["hogar"]
+    return utiles.obtener_color(color) + letra.upper() + utiles.obtener_color("Defecto")
 
 def verificar_arriesgo():
     while True:
@@ -22,24 +11,42 @@ def verificar_arriesgo():
             arriesgo = input("Ingreso incorrecto.\nArriesgo: ")
             continue
         else:
-            return arriesgo
+            return arriesgo.upper()
+
+def verificar_amarillas(arriesgo, solucion):
+    letras_verdes = {}
+    letras_amarillas = {}
+    for i in arriesgo:
+        letras_verdes[i] = 0
+        letras_amarillas[i] = 0
+    for i, j in zip(arriesgo, solucion):
+        if i == j:
+            letras_verdes[i] += 1
+        elif i in solucion:
+            letras_amarillas[i] += 1
+    for i in letras_amarillas:
+        letras_amarillas[i] = solucion.count(i) - letras_verdes[i]
+    return letras_amarillas
 
 def validacion_letra(arriesgo, solucion):
     output = []
-    for i in range(len(arriesgo)):
-        if arriesgo[i] == solucion[i]:
-            output.append(color_de_letra(arriesgo[i], "Verde"))
-        elif arriesgo[i] in solucion:
-            output.append(color_de_letra(arriesgo[i], "Amarillo"))
+    amarillas = verificar_amarillas(arriesgo, solucion)
+    for i, j in zip(arriesgo, solucion):
+        if i == j:
+            output.append(color_de_letra(i, "Verde"))
+        elif i in amarillas and amarillas[i] > 0:
+            output.append(color_de_letra(i, "Amarillo"))
+            amarillas[i] -= 1
         else:
-            output.append(color_de_letra(arriesgo[i], "GrisOscuro"))
+            output.append(color_de_letra(i, "GrisOscuro"))
     return output
 
 def fiuble():
-    solucion = random.choice(obtener_palabras_validas())
+    solucion = random.choice(utiles.obtener_palabras_validas())
+    solucion = solucion.upper()
     print("Palabra a adivinar: ? ? ? ? ?")
     arriesgo = verificar_arriesgo()
-    print("\nPalabra a adivinar:", solucion.upper()[0], solucion.upper()[1], solucion.upper()[2], solucion.upper()[3], solucion.upper()[4])
+    print("\nPalabra a adivinar:", solucion[0], solucion[1], solucion[2], solucion[3], solucion[4])
     intento = validacion_letra(arriesgo, solucion)
     print("Arriesgo:", intento[0], intento[1], intento[2], intento[3], intento[4])
     if arriesgo == solucion:
