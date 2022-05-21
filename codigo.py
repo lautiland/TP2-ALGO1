@@ -5,13 +5,16 @@ def color_de_letra(letra, color):
     return utiles.obtener_color(color) + letra.upper() + utiles.obtener_color("Defecto")
 
 def verificar_arriesgo():
-    while True:
-        arriesgo = input("Arriesgo: ")
-        if len(arriesgo) != 5 or type(arriesgo) != str:
-            arriesgo = input("Ingreso incorrecto.\nArriesgo: ")
-            continue
-        else:
-            return arriesgo.upper()
+    arriesgo = input("Arriesgo: ")
+    while len(arriesgo) != 5 or not arriesgo.isalpha():
+        if not arriesgo.isalpha():
+            arriesgo = input("El arriesgo no puede contener numeros o simbolos.\nArriesgo: ")
+        elif len(arriesgo) != 5:
+            arriesgo = input("La palabra debe contener 5 letras.\nArriesgo: ")
+    reemplazo = (("á", "a"), ("é", "e"), ("í", "i"), ("ó", "o"), ("ú", "u"))
+    for a, b in reemplazo:
+        arriesgo = arriesgo.replace(a, b).replace(a.upper(), b.upper())
+    return arriesgo.upper()
 
 def verificar_amarillas(arriesgo, solucion):
     letras_verdes = {}
@@ -53,3 +56,5 @@ def fiuble():
         print("Ganaste!")
     else:
         print("Perdiste!")
+
+fiuble()
