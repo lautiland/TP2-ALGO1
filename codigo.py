@@ -8,7 +8,7 @@ def verificar_arriesgo():
     arriesgo = input("Arriesgo: ")
     while len(arriesgo) != 5 or not arriesgo.isalpha():
         if not arriesgo.isalpha():
-            arriesgo = input("El arriesgo no puede contener numeros o simbolos.\nArriesgo: ")
+            arriesgo = input("El arriesgo no puede contener numeros, simbolos o espacios.\nArriesgo: ")
         elif len(arriesgo) != 5:
             arriesgo = input("La palabra debe contener 5 letras.\nArriesgo: ")
     reemplazo = (("á", "a"), ("é", "e"), ("í", "i"), ("ó", "o"), ("ú", "u"))
