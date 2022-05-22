@@ -11,10 +11,11 @@ def verificar_arriesgo():
             arriesgo = input("El arriesgo no puede contener numeros, simbolos o espacios.\nArriesgo: ")
         elif len(arriesgo) != 5:
             arriesgo = input("La palabra debe contener 5 letras.\nArriesgo: ")
-    reemplazo = (("á", "a"), ("é", "e"), ("í", "i"), ("ó", "o"), ("ú", "u"))
+    arriesgo = arriesgo.upper()
+    reemplazo = (("Á", "A"), ("É", "E"), ("Í", "I"), ("Ó", "O"), ("Ú", "U"))
     for a, b in reemplazo:
         arriesgo = arriesgo.replace(a, b)
-    return arriesgo.upper()
+    return arriesgo
 
 def verificar_amarillas(arriesgo, solucion):
     letras_verdes = {}
