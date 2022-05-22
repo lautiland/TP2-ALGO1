@@ -13,7 +13,7 @@ def verificar_arriesgo():
             arriesgo = input("La palabra debe contener 5 letras.\nArriesgo: ")
     reemplazo = (("á", "a"), ("é", "e"), ("í", "i"), ("ó", "o"), ("ú", "u"))
     for a, b in reemplazo:
-        arriesgo = arriesgo.replace(a, b).replace(a.upper(), b.upper())
+        arriesgo = arriesgo.replace(a, b)
     return arriesgo.upper()
 
 def verificar_amarillas(arriesgo, solucion):
