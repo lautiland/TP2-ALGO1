@@ -1,14 +1,17 @@
 import random
 import utiles
 
+
 def color_de_letra(letra, color):
     return utiles.obtener_color(color) + letra.upper() + utiles.obtener_color("Defecto")
+
 
 def verificar_arriesgo():
     arriesgo = input("Arriesgo: ")
     while len(arriesgo) != 5 or not arriesgo.isalpha():
         if not arriesgo.isalpha():
-            arriesgo = input("El arriesgo no puede contener numeros, simbolos o espacios.\nArriesgo: ")
+            arriesgo = input(
+                "El arriesgo no puede contener numeros, simbolos o espacios.\nArriesgo: ")
         elif len(arriesgo) != 5:
             arriesgo = input("La palabra debe contener 5 letras.\nArriesgo: ")
     arriesgo = arriesgo.upper()
@@ -16,6 +19,7 @@ def verificar_arriesgo():
     for a, b in reemplazo:
         arriesgo = arriesgo.replace(a, b)
     return arriesgo
+
 
 def verificar_amarillas(arriesgo, solucion):
     letras_verdes = {}
@@ -32,6 +36,7 @@ def verificar_amarillas(arriesgo, solucion):
         letras_amarillas[i] = solucion.count(i) - letras_verdes[i]
     return letras_amarillas
 
+
 def validacion_letra(arriesgo, solucion):
     output = []
     amarillas = verificar_amarillas(arriesgo, solucion)
@@ -45,17 +50,63 @@ def validacion_letra(arriesgo, solucion):
             output.append(color_de_letra(i, "GrisOscuro"))
     return output
 
+
+def validacion_sin_colores(arriesgo, solucion):
+    output = []
+    amarillas = verificar_amarillas(arriesgo, solucion)
+    for i, j in zip(arriesgo, solucion):
+        if i == j:
+            output.append(i)
+        else:
+            output.append("?")
+    return output
+
+
 def fiuble():
     solucion = random.choice(utiles.obtener_palabras_validas())
     solucion = solucion.upper()
-    print("Palabra a adivinar: ? ? ? ? ?")
+    codigo_oculto = "? ? ? ? ?"
+    # parte INICIO palabra a adivinar
+    print("Palabra a adivinar: ", codigo_oculto)
+    # parte INICIO tablero de signos de interogacion
+    tablero = [codigo_oculto for i in range(5)]
+    for f in range(5):
+        print(f"{tablero[f]} ")
+    # parte INICIO te pide que arriesgues tu palabra
     arriesgo = verificar_arriesgo()
-    print("\nPalabra a adivinar:", solucion[0], solucion[1], solucion[2], solucion[3], solucion[4])
-    intento = validacion_letra(arriesgo, solucion)
-    print("Arriesgo:", intento[0], intento[1], intento[2], intento[3], intento[4])
+    i = 0
+    
+    #iteracion entre arriesgo y solucion
+    while arriesgo != solucion:
+        palabra_a_adivinar = validacion_sin_colores(arriesgo, solucion)
+        print("\nPalabra a adivinar:",
+              palabra_a_adivinar[0], palabra_a_adivinar[1], palabra_a_adivinar[2], palabra_a_adivinar[3], palabra_a_adivinar[4])
+        intento = validacion_letra(arriesgo, solucion)
+
+        tablero[i] = f"{intento[0]} {intento[1]} {intento[2]} {intento[3]} {intento[4]}"
+        i += 1
+
+        for f in range(5):
+            print(f"{tablero[f]} ")
+        if i == 5:
+            print("\nPalabra oculta:",
+                  solucion[0], solucion[1], solucion[2], solucion[3], solucion[4])
+            break
+        arriesgo = verificar_arriesgo()
+ 
+    #parte FINAL, si se acierta con la palabra a adivinar
     if arriesgo == solucion:
+        print("\nPalabra a adivinar:",
+              solucion[0], solucion[1], solucion[2], solucion[3], solucion[4])
+
+        intento = validacion_letra(arriesgo, solucion)
+        tablero[i] = f"{intento[0]} {intento[1]} {intento[2]} {intento[3]} {intento[4]}"
+        for f in range(5):
+            print(f"{tablero[f]} ")
         print("Ganaste!")
     else:
+
         print("Perdiste!")
+
 
 fiuble()
