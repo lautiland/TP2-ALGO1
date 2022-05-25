@@ -132,9 +132,11 @@ def fiuble(acumulado):
             print(f"{tablero[f]} ")
         fin = time.time()
         print("Ganaste!")
+        ###Tiempo al final - inicio. Se divide por 60 para sacar la cant. de minutos, y su resto son los segundos
         tiempoM = int((fin - inicio) / 60)
         tiempoS = round((fin - inicio) % 60)
         print("Tardaste " + str(tiempoM) + " minutos y " + str(tiempoS) + " segundos.")
+        # Se busca en la lista de puntajes, cual se obtuvo segun cantidad de intentos
         puntosObtenidos = puntaje[cuentaIntentos - 1]
     else:
         puntosObtenidos = puntaje[cuentaIntentos]
@@ -157,7 +159,7 @@ def fiuble(acumulado):
 
 
 def Intentos(juegoNuevo, acumulado):
-    ###Esta función se encarga del print para volver a jugar y la validación del caracter ingresado
+    ###Esta función se encarga de la validación del caracter ingresado y se pasa la variable acumulado(puntaje)
     while juegoNuevo not in "SsNn":
         juegoNuevo = str(
             input("Ingreso un caracter inválido, vuelva a ingresar su respuesta:")
