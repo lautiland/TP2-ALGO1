@@ -90,6 +90,23 @@ def fiuble(acumulado):
         print(f"{tablero[f]} ")
     # parte INICIO te pide que arriesgues tu palabra
     arriesgo = verificar_arriesgo()
+<<<<<<< HEAD
+=======
+    i = 0
+
+    # iteracion entre arriesgo y solucion
+    while arriesgo != solucion:
+        palabra_a_adivinar = validacion_sin_colores(arriesgo, solucion)
+        print(
+            "\nPalabra a adivinar:",
+            palabra_a_adivinar[0],
+            palabra_a_adivinar[1],
+            palabra_a_adivinar[2],
+            palabra_a_adivinar[3],
+            palabra_a_adivinar[4],
+        )
+        intento = validacion_letra(arriesgo, solucion)
+>>>>>>> 7f21675a4bcdff45d9b46f991e04eabc8c453e06
 
     lista_antigua = ['?', '?', '?', '?', '?']
     i = 0
@@ -115,14 +132,38 @@ def fiuble(acumulado):
         i += 1
         for f in range(5):
             print(f"{tablero[f]} ")
+<<<<<<< HEAD
         if i != 5:
             arriesgo = verificar_arriesgo()
             cuentaIntentos += 1
+=======
+        if i == 5:
+            print(
+                "\nPalabra oculta:",
+                solucion[0],
+                solucion[1],
+                solucion[2],
+                solucion[3],
+                solucion[4],
+            )
+            break
+        arriesgo = verificar_arriesgo()
+        cuentaIntentos += 1
+
+>>>>>>> 7f21675a4bcdff45d9b46f991e04eabc8c453e06
     # parte FINAL, si se acierta con la palabra a adivinar
     if arriesgo == solucion:
         print(
             "\nPalabra a adivinar:",
+<<<<<<< HEAD
             *solucion
+=======
+            solucion[0],
+            solucion[1],
+            solucion[2],
+            solucion[3],
+            solucion[4],
+>>>>>>> 7f21675a4bcdff45d9b46f991e04eabc8c453e06
         )
 
         intento = validacion_letra(arriesgo, solucion)
@@ -132,11 +173,18 @@ def fiuble(acumulado):
             print(f"{tablero[f]} ")
         fin = time.time()
         print("Ganaste!")
+<<<<<<< HEAD
         # Tiempo al final - inicio. Se divide por 60 para sacar la cant. de minutos, y su resto son los segundos
         tiempoM = int((fin - inicio) / 60)
         tiempoS = round((fin - inicio) % 60)
         print("Tardaste " + str(tiempoM) +
               " minutos y " + str(tiempoS) + " segundos.")
+=======
+        ###Tiempo al final - inicio. Se divide por 60 para sacar la cant. de minutos, y su resto son los segundos
+        tiempoM = int((fin - inicio) / 60)
+        tiempoS = round((fin - inicio) % 60)
+        print("Tardaste " + str(tiempoM) + " minutos y " + str(tiempoS) + " segundos.")
+>>>>>>> 7f21675a4bcdff45d9b46f991e04eabc8c453e06
         # Se busca en la lista de puntajes, cual se obtuvo segun cantidad de intentos
         puntosObtenidos = puntaje[cuentaIntentos - 1]
     else:
@@ -160,7 +208,11 @@ def fiuble(acumulado):
 
 
 def Intentos(juegoNuevo, acumulado):
+<<<<<<< HEAD
     # Esta función se encarga de la validación del caracter ingresado y se pasa la variable acumulado(puntaje)
+=======
+    ###Esta función se encarga de la validación del caracter ingresado y se pasa la variable acumulado(puntaje)
+>>>>>>> 7f21675a4bcdff45d9b46f991e04eabc8c453e06
     while juegoNuevo not in "SsNn":
         juegoNuevo = str(
             input("Ingreso un caracter inválido, vuelva a ingresar su respuesta:")
@@ -172,5 +224,8 @@ def Intentos(juegoNuevo, acumulado):
         print("Juego Terminado.")
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7f21675a4bcdff45d9b46f991e04eabc8c453e06
 fiuble(acumulado)
