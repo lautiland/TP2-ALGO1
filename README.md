@@ -1,6 +1,2 @@
-.sada
-Drope estuvo aqui
-Probando esta ****.
-Probando123 simona la cacariza
-Etapa 4 hecha(pedro)ahora si
+Etapa 5 casi hecha, falta lo ya mencionado en el wspp.
 guardado letra a letra(palabra adivinar:)

@@ -2,7 +2,7 @@ import random
 import time
 import utiles
 
-acumulado = 0
+
 puntaje = [50, 40, 30, 20, 10, -100]
 
 
@@ -76,7 +76,17 @@ def validacion_sin_colores(arriesgo, solucion):
     return output
 
 
-def fiuble(acumulado):
+
+def fiuble():
+    jugador_1,jugador_2 = str(input("Ingrese el nombre del jugador 1: ")), str(input("Ingrese el nombre del jugador 2: "))
+    inicio = jugador_1,jugador_2
+    orden_de_inicio = [[random.choice(inicio), 0]]
+    if jugador_1 in orden_de_inicio:
+        orden_de_inicio.append([jugador_2, 0])
+    else:
+        orden_de_inicio.append([jugador_1, 0]) 
+    print(f"\nEl primer turno es de {orden_de_inicio[0][0]}")
+    
     cuentaIntentos = 1
     inicio = time.time()
     solucion = random.choice(utiles.obtener_palabras_validas())
@@ -95,21 +105,24 @@ def fiuble(acumulado):
     i = 0
 
     # iteracion entre arriesgo y solucion
+    
     while i != 5 and arriesgo != solucion:
-
         palabra_a_adivinar = validacion_sin_colores(arriesgo, solucion)
         lista_antigua = iteracion_palabra_a_adivinar(
             palabra_a_adivinar, lista_antigua)
-        print(
-            "\nPalabra a adivinar:",
-            *lista_antigua
-        )
 
         if i == 4:
             print(
                 "\nPalabra a adivinar:",
                 *solucion
             )
+        else:
+            orden_de_inicio[0],orden_de_inicio[1] = orden_de_inicio[1],orden_de_inicio[0] #Intercambio de turnos de los jugadores
+            print(f"\nAhora es el turno de {orden_de_inicio[0][0]}")
+            print(
+            "Palabra a adivinar:",
+            *lista_antigua
+        )
         intento = validacion_letra(arriesgo, solucion)
         tablero[i] = f"{intento[0]} {intento[1]} {intento[2]} {intento[3]} {intento[4]}"
         i += 1
@@ -131,35 +144,36 @@ def fiuble(acumulado):
         for f in range(5):
             print(f"{tablero[f]} ")
         fin = time.time()
-        print("Ganaste!")
+        print(f"El ganador es {orden_de_inicio[0][0]}")
         # Tiempo al final - inicio. Se divide por 60 para sacar la cant. de minutos, y su resto son los segundos
         tiempoM = int((fin - inicio) / 60)
         tiempoS = round((fin - inicio) % 60)
-        print("Tardaste " + str(tiempoM) +
+        print("Tardaron " + str(tiempoM) +
               " minutos y " + str(tiempoS) + " segundos.")
         # Se busca en la lista de puntajes, cual se obtuvo segun cantidad de intentos
         puntosObtenidos = puntaje[cuentaIntentos - 1]
     else:
         puntosObtenidos = puntaje[cuentaIntentos]
-        print("Perdiste!")
+        print(f"El perdedor es {orden_de_inicio[0][0]}")
+    #orden_de_inicio[0][1] += puntosObtenidos
+    #orden_de_inicio[1][1] -= puntosObtenidos
 
-    if acumulado != 0:
-        acumulado += puntosObtenidos
+    if puntosObtenidos == -100:
+        orden_de_inicio[0][1] += puntosObtenidos
+        orden_de_inicio[1][1] += int(puntosObtenidos/2)
     else:
-        acumulado = puntosObtenidos
-
+        orden_de_inicio[0][1] += puntosObtenidos
+        orden_de_inicio[1][1] -= puntosObtenidos
+    
     print(
-        "Obtuviste un total de "
-        + str(puntosObtenidos)
-        + ", tenes acumulados "
-        + str(acumulado)    
-        + " puntos."
+        f"El jugador {orden_de_inicio[0][0]} obtuvo un total de {orden_de_inicio[0][1]}\n"
+        + f"El jugador {orden_de_inicio[1][0]} obtuvo un total de {orden_de_inicio[1][1]}"
     )
     caracter = str(input("Desea seguir jugando?(S/N):"))
-    Intentos(caracter, acumulado)
+    Intentos(caracter)
 
 
-def Intentos(juegoNuevo, acumulado):
+def Intentos(juegoNuevo):
     # Esta función se encarga de la validación del caracter ingresado y se pasa la variable acumulado(puntaje)
     while juegoNuevo not in "SsNn":
         juegoNuevo = str(
@@ -167,9 +181,9 @@ def Intentos(juegoNuevo, acumulado):
         )
 
     if juegoNuevo == "S" or juegoNuevo == "s":
-        fiuble(acumulado)
+        fiuble()
     elif juegoNuevo == "N" or juegoNuevo == "n":
         print("Juego Terminado.")
 
 
-fiuble(acumulado)
+fiuble()
