@@ -2,9 +2,7 @@ import random
 import time
 import utiles
 
-
 puntaje = [50, 40, 30, 20, 10, -100]
-
 
 def color_de_letra(letra, color):
     return utiles.obtener_color(color) + letra.upper() + utiles.obtener_color("Defecto")
@@ -75,16 +73,22 @@ def validacion_sin_colores(arriesgo, solucion):
             output.append("?")
     return output
 
+def volver_a_jugar(si_o_no, orden_de_inicio):
+    # Esta función se encarga de la validación del caracter ingresado y se pasa la variable acumulado(puntaje)
+    while si_o_no not in "SsNn":
+        si_o_no = str(
+            input("Ingreso un caracter inválido, vuelva a ingresar su respuesta:")
+        )
 
+    if si_o_no in "Ss":
+        fiuble(orden_de_inicio)
+    elif si_o_no in "Nn":
+        print("Juego Terminado.")
 
-def fiuble():
-    jugador_1,jugador_2 = str(input("Ingrese el nombre del jugador 1: ")), str(input("Ingrese el nombre del jugador 2: "))
-    inicio = jugador_1,jugador_2
-    orden_de_inicio = [[random.choice(inicio), 0]]
-    if jugador_1 in orden_de_inicio:
-        orden_de_inicio.append([jugador_2, 0])
-    else:
-        orden_de_inicio.append([jugador_1, 0]) 
+def fiuble(orden_de_inicio):
+
+    orden_de_inicio[0],orden_de_inicio[1] = orden_de_inicio[1],orden_de_inicio[0]
+
     print(f"\nEl primer turno es de {orden_de_inicio[0][0]}")
     
     cuentaIntentos = 1
@@ -155,8 +159,6 @@ def fiuble():
     else:
         puntosObtenidos = puntaje[cuentaIntentos]
         print(f"El perdedor es {orden_de_inicio[0][0]}")
-    #orden_de_inicio[0][1] += puntosObtenidos
-    #orden_de_inicio[1][1] -= puntosObtenidos
 
     if puntosObtenidos == -100:
         orden_de_inicio[0][1] += puntosObtenidos
@@ -164,26 +166,26 @@ def fiuble():
     else:
         orden_de_inicio[0][1] += puntosObtenidos
         orden_de_inicio[1][1] -= puntosObtenidos
-    
+    #Mostramos los resultados    
     print(
-        f"El jugador {orden_de_inicio[0][0]} obtuvo un total de {orden_de_inicio[0][1]}\n"
-        + f"El jugador {orden_de_inicio[1][0]} obtuvo un total de {orden_de_inicio[1][1]}"
+        f"El jugador {orden_de_inicio[0][0]} obtuvo un total de {orden_de_inicio[0][1]} puntos\n"
+        + f"El jugador {orden_de_inicio[1][0]} obtuvo un total de {orden_de_inicio[1][1]} puntos"
     )
-    caracter = str(input("Desea seguir jugando?(S/N):"))
-    Intentos(caracter)
 
+    volver_a_jugar(input("Desea seguir jugando?(S/N): "), orden_de_inicio)
+    
 
-def Intentos(juegoNuevo):
-    # Esta función se encarga de la validación del caracter ingresado y se pasa la variable acumulado(puntaje)
-    while juegoNuevo not in "SsNn":
-        juegoNuevo = str(
-            input("Ingreso un caracter inválido, vuelva a ingresar su respuesta:")
-        )
+def main():
+    jugador_1,jugador_2 = str(input("Ingrese el nombre del jugador 1: ")), str(input("Ingrese el nombre del jugador 2: "))
+    inicio = jugador_1,jugador_2
+    orden_de_inicio = [[random.choice(inicio), 0]]
 
-    if juegoNuevo == "S" or juegoNuevo == "s":
-        fiuble()
-    elif juegoNuevo == "N" or juegoNuevo == "n":
-        print("Juego Terminado.")
+    if jugador_1 in orden_de_inicio:
+        orden_de_inicio.append([jugador_2, 0])
+    else:
+        orden_de_inicio.append([jugador_1, 0])
 
+    fiuble(orden_de_inicio)
 
-fiuble()
+main()
+ 
