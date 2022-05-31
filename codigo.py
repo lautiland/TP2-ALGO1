@@ -100,16 +100,17 @@ def fiuble(acumulado):
         palabra_a_adivinar = validacion_sin_colores(arriesgo, solucion)
         lista_antigua = iteracion_palabra_a_adivinar(
             palabra_a_adivinar, lista_antigua)
-        print(
-            "\nPalabra a adivinar:",
-            *lista_antigua
-        )
-
         if i == 4:
             print(
                 "\nPalabra a adivinar:",
                 *solucion
             )
+        else:
+            print(
+                "\nPalabra a adivinar:",
+                *lista_antigua
+                )
+
         intento = validacion_letra(arriesgo, solucion)
         tablero[i] = f"{intento[0]} {intento[1]} {intento[2]} {intento[3]} {intento[4]}"
         i += 1
@@ -131,31 +132,51 @@ def fiuble(acumulado):
         for f in range(5):
             print(f"{tablero[f]} ")
         fin = time.time()
-        print("Ganaste!")
         # Tiempo al final - inicio. Se divide por 60 para sacar la cant. de minutos, y su resto son los segundos
         tiempoM = int((fin - inicio) / 60)
         tiempoS = round((fin - inicio) % 60)
-        print("Tardaste " + str(tiempoM) +
-              " minutos y " + str(tiempoS) + " segundos.")
+        print("Ganaste! Tardaste " + str(tiempoM) +
+              " minutos y " + str(tiempoS) + " segundos.\n")
         # Se busca en la lista de puntajes, cual se obtuvo segun cantidad de intentos
         puntosObtenidos = puntaje[cuentaIntentos - 1]
     else:
         puntosObtenidos = puntaje[cuentaIntentos]
-        print("Perdiste!")
+        print("Perdiste!\n")
 
     if acumulado != 0:
         acumulado += puntosObtenidos
+        if puntosObtenidos > 0:
+            print(
+                "Obtuviste un total de "
+                + str(puntosObtenidos)
+                + ", tenes acumulados "
+                + str(acumulado)
+                + " puntos.\n"
+            )
+        else:
+            print(
+                "Perdiste un total de "
+                + str(puntosObtenidos)
+                + ", tenes acumulados "
+                + str(acumulado)
+                + " puntos.\n"
+            )
     else:
         acumulado = puntosObtenidos
+        if puntosObtenidos > 0:
+            print(
+                "Obtuviste un total de "
+                + str(puntosObtenidos)
+                + " puntos.\n"
+            )
+        else:
+            print(
+                "Perdiste un total de "
+                + str(puntosObtenidos)
+                + " puntos.\n"
+            )
 
-    print(
-        "Obtuviste un total de "
-        + str(puntosObtenidos)
-        + ", tenes acumulados "
-        + str(acumulado)    
-        + " puntos."
-    )
-    caracter = str(input("Desea seguir jugando?(S/N):"))
+    caracter = str(input("Desea seguir jugando? (S/N): "))
     Intentos(caracter, acumulado)
 
 
@@ -163,7 +184,7 @@ def Intentos(juegoNuevo, acumulado):
     # Esta función se encarga de la validación del caracter ingresado y se pasa la variable acumulado(puntaje)
     while juegoNuevo not in "SsNn":
         juegoNuevo = str(
-            input("Ingreso un caracter inválido, vuelva a ingresar su respuesta:")
+            input("Ingreso un caracter inválido, vuelva a ingresar su respuesta: ")
         )
 
     if juegoNuevo == "S" or juegoNuevo == "s":
