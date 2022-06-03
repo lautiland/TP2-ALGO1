@@ -73,23 +73,28 @@ def validacion_sin_colores(arriesgo, solucion):
             output.append("?")
     return output
 
-def volver_a_jugar(si_o_no, orden_de_inicio):
+def volver_a_jugar(si_o_no, orden_de_inicio, jugador_inicial):
     # Esta función se encarga de la validación del caracter ingresado y se pasa la variable acumulado(puntaje)
     while si_o_no not in "SsNn":
         si_o_no = str(
-            input("Ingreso un caracter inválido, vuelva a ingresar su respuesta:")
+            input("Ingreso un caracter inválido, vuelva a ingresar su respuesta: ")
         )
 
     if si_o_no in "Ss":
+        if jugador_inicial == orden_de_inicio[0][0]:
+            orden_de_inicio[0], orden_de_inicio[1] = orden_de_inicio[1], orden_de_inicio[0]
         fiuble(orden_de_inicio)
     elif si_o_no in "Nn":
-        print("Juego Terminado.")
+        if orden_de_inicio[0][1] > orden_de_inicio[1][1]:
+            print(f"\nEl ganador es {orden_de_inicio[0][0]} con un total de {orden_de_inicio[0][1]}.")
+        elif orden_de_inicio[1][1] > orden_de_inicio[0][1]:
+            print(f"\nEl ganador es {orden_de_inicio[1][0]} con un total de {orden_de_inicio[1][1]}.")
+        else:
+            print(f"\nAmbos jugadores han empatado con un total de {orden_de_inicio[0][1]} puntos.")
 
 def fiuble(orden_de_inicio):
-
-    orden_de_inicio[0],orden_de_inicio[1] = orden_de_inicio[1],orden_de_inicio[0]
-
-    print(f"\nEl primer turno es de {orden_de_inicio[0][0]}")
+    jugador_inicial = orden_de_inicio[0][0]
+    print(f"\nEl primer turno es de {jugador_inicial}")
     
     cuentaIntentos = 1
     inicio = time.time()
@@ -103,6 +108,7 @@ def fiuble(orden_de_inicio):
     for f in range(5):
         print(f"{tablero[f]} ")
     # parte INICIO te pide que arriesgues tu palabra
+    print(solucion)
     arriesgo = verificar_arriesgo()
 
     lista_antigua = ['?', '?', '?', '?', '?']
@@ -121,7 +127,7 @@ def fiuble(orden_de_inicio):
                 *solucion
             )
         else:
-            orden_de_inicio[0],orden_de_inicio[1] = orden_de_inicio[1],orden_de_inicio[0] #Intercambio de turnos de los jugadores
+            orden_de_inicio[0], orden_de_inicio[1] = orden_de_inicio[1], orden_de_inicio[0] #Intercambio de turnos de los jugadores
             print(f"\nAhora es el turno de {orden_de_inicio[0][0]}")
             print(
             "Palabra a adivinar:",
@@ -148,17 +154,17 @@ def fiuble(orden_de_inicio):
         for f in range(5):
             print(f"{tablero[f]} ")
         fin = time.time()
-        print(f"El ganador es {orden_de_inicio[0][0]}")
+        print(f"El ganador es {orden_de_inicio[0][0]}\n")
         # Tiempo al final - inicio. Se divide por 60 para sacar la cant. de minutos, y su resto son los segundos
         tiempoM = int((fin - inicio) / 60)
         tiempoS = round((fin - inicio) % 60)
         print("Tardaron " + str(tiempoM) +
-              " minutos y " + str(tiempoS) + " segundos.")
+              " minutos y " + str(tiempoS) + " segundos.\n")
         # Se busca en la lista de puntajes, cual se obtuvo segun cantidad de intentos
         puntosObtenidos = puntaje[cuentaIntentos - 1]
     else:
         puntosObtenidos = puntaje[cuentaIntentos]
-        print(f"El perdedor es {orden_de_inicio[0][0]}")
+        print(f"Ambos jugadores han perdido.\n")
 
     if puntosObtenidos == -100:
         orden_de_inicio[0][1] += puntosObtenidos
@@ -169,18 +175,18 @@ def fiuble(orden_de_inicio):
     #Mostramos los resultados    
     print(
         f"El jugador {orden_de_inicio[0][0]} obtuvo un total de {orden_de_inicio[0][1]} puntos\n"
-        + f"El jugador {orden_de_inicio[1][0]} obtuvo un total de {orden_de_inicio[1][1]} puntos"
+        + f"El jugador {orden_de_inicio[1][0]} obtuvo un total de {orden_de_inicio[1][1]} puntos\n"
     )
 
-    volver_a_jugar(input("Desea seguir jugando?(S/N): "), orden_de_inicio)
+    volver_a_jugar(input("Desea seguir jugando? (S/N): "), orden_de_inicio, jugador_inicial)
     
 
 def main():
-    jugador_1,jugador_2 = str(input("Ingrese el nombre del jugador 1: ")), str(input("Ingrese el nombre del jugador 2: "))
-    inicio = jugador_1,jugador_2
+    jugador_1, jugador_2 = str(input("Ingrese el nombre del jugador 1: ")), str(input("Ingrese el nombre del jugador 2: "))
+    inicio = jugador_1, jugador_2
     orden_de_inicio = [[random.choice(inicio), 0]]
 
-    if jugador_1 in orden_de_inicio:
+    if jugador_1 in orden_de_inicio[0][0]:
         orden_de_inicio.append([jugador_2, 0])
     else:
         orden_de_inicio.append([jugador_1, 0])
