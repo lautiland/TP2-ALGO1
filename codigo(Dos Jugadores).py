@@ -138,6 +138,17 @@ def constantes_y_print_prewhile():
     i = 0
     return arriesgo, lista_antigua, i, tablero
 
+#Asigna los puntos a los jugadores
+def asignar_puntos(puntos_obtenidos, orden_de_inicio):
+    if puntos_obtenidos == -100:
+        orden_de_inicio[0][1] += puntos_obtenidos
+        orden_de_inicio[1][1] += int(puntos_obtenidos/2)
+    else:
+        orden_de_inicio[0][1] += puntos_obtenidos
+        orden_de_inicio[1][1] -= puntos_obtenidos
+    return orden_de_inicio
+#Funcion hecha por Pedro Miguel
+
 
 def fiuble(orden_de_inicio):
     # Funcion encargada de llevar a cabo el desempeño del juego, usando funciones anteriores.
@@ -191,12 +202,7 @@ def fiuble(orden_de_inicio):
         puntosObtenidos = puntaje[cuentaIntentos]
         print(f"Ambos jugadores han perdido.\n")
 
-    if puntosObtenidos == -100:
-        orden_de_inicio[0][1] += puntosObtenidos
-        orden_de_inicio[1][1] += int(puntosObtenidos/2)
-    else:
-        orden_de_inicio[0][1] += puntosObtenidos
-        orden_de_inicio[1][1] -= puntosObtenidos
+    orden_de_inicio = asignar_puntos(puntosObtenidos, orden_de_inicio)
     # Mostramos los resultados
     print(
         f"El jugador {orden_de_inicio[0][0]} obtuvo un total de {orden_de_inicio[0][1]} puntos\n"
