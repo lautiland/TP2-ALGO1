@@ -197,7 +197,7 @@ def obtener_palabras(archivo1, archivo2, archivo3, archivoNuevo, longitud_palabr
                     dicc_palabras[elemento].append(1)
                 else:
                     dicc_palabras[elemento][1] += 1
-        linea1 = leer_linea_archivo(archivo2, "")
+        linea2 = leer_linea_archivo(archivo2, "")
     linea3 = leer_linea_archivo(archivo3, "")
     while linea3 != "":
         for elemento in linea3.copy():
@@ -214,6 +214,7 @@ def obtener_palabras(archivo1, archivo2, archivo3, archivoNuevo, longitud_palabr
                 else:
                     dicc_palabras[elemento] += 1
         linea3 = leer_linea_archivo(archivo1, "")
+    print("Piola")
     lista_palabras = dicc_palabras.keys()
     lista_palabras.sort()
     for elemento in lista_palabras:
