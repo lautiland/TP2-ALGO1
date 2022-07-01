@@ -99,7 +99,7 @@ def volver_a_jugar(si_o_no, orden_de_inicio, jugador_inicial):
     if si_o_no in "Ss":
         if jugador_inicial == orden_de_inicio[0][0]:
             orden_de_inicio[0], orden_de_inicio[1] = orden_de_inicio[1], orden_de_inicio[0]
-        fiuble(orden_de_inicio)
+        fiuble(orden_de_inicio, lista_palabras_posibles, longitud_palabra)
     elif si_o_no in "Nn":
         if orden_de_inicio[0][1] > orden_de_inicio[1][1]:
             print(
@@ -212,7 +212,7 @@ def obtener_palabras(archivo1, archivo2, archivo3, archivoNuevo, longitud_palabr
                 elif len(dicc_palabras[elemento]) == 2:
                     dicc_palabras[elemento].append(1)
                 else:
-                    dicc_palabras[elemento] += 1
+                    dicc_palabras[elemento][2] += 1
         linea3 = leer_linea_archivo(archivo1, "")
     print("Piola")
     lista_palabras = dicc_palabras.keys()
@@ -272,7 +272,7 @@ def fiuble(orden_de_inicio, lista_palabras, longitud_palabra):
         puntosObtenidos = puntaje[cuentaIntentos - 1]
     else:
         puntosObtenidos = puntaje[cuentaIntentos]
-        print(f"Ambos jugadores han perdido.\n")
+        print("Ambos jugadores han perdido.\n")
 
     orden_de_inicio = asignar_puntos(puntosObtenidos, orden_de_inicio)
     # Mostramos los resultados
