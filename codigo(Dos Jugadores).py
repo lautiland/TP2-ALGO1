@@ -150,17 +150,88 @@ def asignar_puntos(puntos_obtenidos, orden_de_inicio):
 #Funcion hecha por Pedro Miguel
 
 
-def fiuble(orden_de_inicio):
+def leer_linea_archivo(archivo, default):
+    linea = archivo.readline()
+    lista = linea.lstrip("¡¿-_").rstrip(".;:-_),?!\n").split(" ")
+    return lista if lista[0] != "" else default
+
+def leer_linea_csv(archivo, default):
+    linea = archivo.readline()
+    return linea if linea else default
+
+def obtener_config(archivoConfig):
+    archivoConfig.seek(0)
+    linea = leer_linea_csv(archivoConfig, "longitud_palabra_secreta,5")
+    aux, longitud_palabra = linea.rstrip("\n").split(",")
+    linea = leer_linea_csv(archivoConfig, "maximo_partidas,5")
+    aux, maximo_partidas = linea.rstrip("\n").split(",")
+    linea = leer_linea_csv(archivoConfig, "reiniciar_archivo,False")
+    aux, reiniciar_archivo_partidas = linea.rstrip("\n").split(",")
+    return int(longitud_palabra), int(maximo_partidas), reiniciar_archivo_partidas
+
+def obtener_palabras(archivo1, archivo2, archivo3, archivoNuevo, longitud_palabra):
+    archivo1.seek(0)
+    archivo2.seek(0)
+    archivo3.seek(0)
+    dicc_palabras = {}
+    linea1 = leer_linea_archivo(archivo1, "")
+    while linea1 != "":
+        for elemento in linea1.copy():
+            if not elemento.isalpha() or len(elemento) != longitud_palabra:
+                linea1.remove(elemento)
+            else:
+                if elemento not in dicc_palabras:
+                    dicc_palabras[elemento] = [1]
+                else:
+                    dicc_palabras[elemento][0] += 1
+        linea1 = leer_linea_archivo(archivo1, "")
+    linea2 = leer_linea_archivo(archivo2, "")
+    while linea2 != "":
+        for elemento in linea2.copy():
+            if not elemento.isalpha() or len(elemento) != longitud_palabra:
+                linea2.remove(elemento)
+            else:
+                if elemento not in dicc_palabras:
+                    dicc_palabras[elemento] = [0, 1]
+                elif len(dicc_palabras[elemento]) == 1:
+                    dicc_palabras[elemento].append(1)
+                else:
+                    dicc_palabras[elemento][1] += 1
+        linea1 = leer_linea_archivo(archivo2, "")
+    linea3 = leer_linea_archivo(archivo3, "")
+    while linea3 != "":
+        for elemento in linea3.copy():
+            if not elemento.isalpha() or len(elemento) != longitud_palabra:
+                linea1.remove(elemento)
+            else:
+                if elemento not in dicc_palabras:
+                    dicc_palabras[elemento] = [0, 0, 1]
+                elif len(dicc_palabras[elemento]) == 1:
+                    dicc_palabras[elemento].append(0)
+                    dicc_palabras[elemento].append(1)
+                elif len(dicc_palabras[elemento]) == 2:
+                    dicc_palabras[elemento].append(1)
+                else:
+                    dicc_palabras[elemento] += 1
+        linea3 = leer_linea_archivo(archivo1, "")
+    lista_palabras = dicc_palabras.keys()
+    lista_palabras.sort()
+    for elemento in lista_palabras:
+        archivoNuevo.write(elemento + "," + dicc_palabras[elemento][0] + "," + dicc_palabras[elemento][1]
+        + "," + dicc_palabras[elemento][2] + "\n")
+    return lista_palabras
+    
+
+def fiuble(orden_de_inicio, lista_palabras, longitud_palabra):
     # Funcion encargada de llevar a cabo el desempeño del juego, usando funciones anteriores.
     jugador_inicial = orden_de_inicio[0][0]
     print(f"\nEl primer turno es de {jugador_inicial}")
 
     cuentaIntentos = 1
     inicio = time.time()
-    solucion = random.choice(utiles.obtener_palabras_validas())
+    solucion = random.choice(lista_palabras)
     solucion = solucion.upper()
 
-  
     arriesgo, lista_antigua, i, tablero = constantes_y_print_prewhile()
 
     # iteracion entre arriesgo y solucion
@@ -216,6 +287,10 @@ def fiuble(orden_de_inicio):
 
 def main():
     # Funcion principal, encargada de tomar los nombres de los jugadores, mezclarlos, y luego ejecutar el juego.
+    config = open("configuracion.csv", "r+")
+    longitud_palabra, maximo_partidas, reinciar_archivo_partidas = obtener_config(config)
+    config.close()
+    
     jugador_1, jugador_2 = str(input("Ingrese el nombre del jugador 1: ")), str(
         input("Ingrese el nombre del jugador 2: "))
     inicio = jugador_1, jugador_2
@@ -225,8 +300,18 @@ def main():
         orden_de_inicio.append([jugador_2, 0])
     else:
         orden_de_inicio.append([jugador_1, 0])
-
-    fiuble(orden_de_inicio)
+    
+    archivo1 = open("Cuentos.txt", "r")
+    archivo2 = open("La araña negra - tomo 1.txt", "r")
+    archivo3 = open("Las 1000 Noches y 1 Noche.txt", "r")
+    archivoNuevo = open("palabras.csv", "w")
+    lista_palabras_posibles = obtener_palabras(archivo1, archivo2, archivo3, archivoNuevo, longitud_palabra)
+    print("FUNCIONAAAAAAAAAA (creo)")
+    archivo1.close()
+    archivo2.close()
+    archivo3.close()
+    archivoNuevo.close()
+    fiuble(orden_de_inicio, lista_palabras_posibles, longitud_palabra)
 
 
 main()
