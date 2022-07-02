@@ -152,7 +152,7 @@ def asignar_puntos(puntos_obtenidos, orden_de_inicio):
 
 def leer_linea_archivo(archivo, default):
     linea = archivo.readline()
-    lista = linea.lstrip("¡¿-_").rstrip(".;:-_),?!\n").split(" ")
+    lista = linea.lstrip(" ¡¿-_").rstrip(" .;:-_),?!\n").split(" ")
     return lista if lista[0] != "" else default
 
 def leer_linea_csv(archivo, default):
@@ -202,7 +202,7 @@ def obtener_palabras(archivo1, archivo2, archivo3, archivoNuevo, longitud_palabr
     while linea3 != "":
         for elemento in linea3.copy():
             if not elemento.isalpha() or len(elemento) != longitud_palabra:
-                linea1.remove(elemento)
+                linea3.remove(elemento)
             else:
                 if elemento not in dicc_palabras:
                     dicc_palabras[elemento] = [0, 0, 1]
@@ -215,11 +215,11 @@ def obtener_palabras(archivo1, archivo2, archivo3, archivoNuevo, longitud_palabr
                     dicc_palabras[elemento][2] += 1
         linea3 = leer_linea_archivo(archivo1, "")
     print("Piola")
-    lista_palabras = dicc_palabras.keys()
-    lista_palabras.sort()
+    lista_palabras = sorted(dicc_palabras.keys())
+    
     for elemento in lista_palabras:
-        archivoNuevo.write(elemento + "," + dicc_palabras[elemento][0] + "," + dicc_palabras[elemento][1]
-        + "," + dicc_palabras[elemento][2] + "\n")
+        archivoNuevo.write(elemento + "," + str(dicc_palabras[elemento][0]) + "," + str(dicc_palabras[elemento][1])
+        + "," + str(dicc_palabras[elemento][2]) + "\n")
     return lista_palabras
     
 
@@ -304,7 +304,7 @@ def main():
     
     archivo1 = open("Cuentos.txt", "r")
     archivo2 = open("La araña negra - tomo 1.txt", "r")
-    archivo3 = open("Las 1000 Noches y 1 Noche.txt", "r")
+    archivo3 = open("Las 1000 Noches y 1 Noche.txt", "r", encoding="utf8")
     archivoNuevo = open("palabras.csv", "w")
     lista_palabras_posibles = obtener_palabras(archivo1, archivo2, archivo3, archivoNuevo, longitud_palabra)
     print("FUNCIONAAAAAAAAAA (creo)")
