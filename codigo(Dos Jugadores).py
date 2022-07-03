@@ -10,6 +10,8 @@ puntaje = [50, 40, 30, 20, 10, -100]
 def color_de_letra(letra, color):
     # Utiliza el archivo utiles.py para obtener los colores correspondientes a la validacion de la letra.1
     return utiles.obtener_color(color) + letra.upper() + utiles.obtener_color("Defecto")
+
+
 # Funcion hecha por Pedro Miguel
 
 
@@ -28,6 +30,8 @@ def verificar_arriesgo():
     for a, b in reemplazo:
         arriesgo = arriesgo.replace(a, b)
     return arriesgo
+
+
 # Funcion hecha por Pedro Miguel
 
 
@@ -46,6 +50,8 @@ def verificar_amarillas(arriesgo, solucion):
     for i in letras_amarillas:
         letras_amarillas[i] = solucion.count(i) - letras_verdes[i]
     return letras_amarillas
+
+
 # Funcion hecha por Pedro Miguel
 
 
@@ -62,6 +68,8 @@ def validacion_letra(arriesgo, solucion):
         else:
             output.append(color_de_letra(i, "GrisOscuro"))
     return output
+
+
 # Funcion hecha por Pedro Miguel
 
 
@@ -74,6 +82,8 @@ def iteracion_palabra_a_adivinar(lista_nueva, lista_antigua):
         else:
             agregarse.append(j)
     return agregarse
+
+
 # Funcion hecha por Nicolas Serrudo y Jonathan Pistonesi
 
 
@@ -86,6 +96,8 @@ def validacion_sin_colores(arriesgo, solucion):
         else:
             output.append("?")
     return output
+
+
 # Funcion hecha por Nicolas Serrudo y Jonathan Pistonesi
 
 
@@ -98,18 +110,26 @@ def volver_a_jugar(si_o_no, orden_de_inicio, jugador_inicial):
 
     if si_o_no in "Ss":
         if jugador_inicial == orden_de_inicio[0][0]:
-            orden_de_inicio[0], orden_de_inicio[1] = orden_de_inicio[1], orden_de_inicio[0]
+            orden_de_inicio[0], orden_de_inicio[1] = (
+                orden_de_inicio[1],
+                orden_de_inicio[0],
+            )
         fiuble(orden_de_inicio, lista_palabras_posibles, longitud_palabra)
     elif si_o_no in "Nn":
         if orden_de_inicio[0][1] > orden_de_inicio[1][1]:
             print(
-                f"\nEl ganador es {orden_de_inicio[0][0]} con un total de {orden_de_inicio[0][1]}.")
+                f"\nEl ganador es {orden_de_inicio[0][0]} con un total de {orden_de_inicio[0][1]}."
+            )
         elif orden_de_inicio[1][1] > orden_de_inicio[0][1]:
             print(
-                f"\nEl ganador es {orden_de_inicio[1][0]} con un total de {orden_de_inicio[1][1]}.")
+                f"\nEl ganador es {orden_de_inicio[1][0]} con un total de {orden_de_inicio[1][1]}."
+            )
         else:
             print(
-                f"\nAmbos jugadores han empatado con un total de {orden_de_inicio[0][1]} puntos.")
+                f"\nAmbos jugadores han empatado con un total de {orden_de_inicio[0][1]} puntos."
+            )
+
+
 # Funcion hecha por Pedro Perez
 
 # imprime en pantalla los turnos, el intento de palabra, y solucion
@@ -121,6 +141,7 @@ def print_text_while(solucion, orden_de_inicio, lista_antigua, i):
         orden_de_inicio[0], orden_de_inicio[1] = orden_de_inicio[1], orden_de_inicio[0]
         print(f"\nAhora es el turno de {orden_de_inicio[0][0]}")
         print("Palabra a adivinar:", *lista_antigua)
+
 
 # funcion que retorna constantes y un print iteracion inicio del juego
 def constantes_y_print_prewhile():
@@ -134,30 +155,40 @@ def constantes_y_print_prewhile():
     # parte INICIO te pide que arriesgues tu palabra
     arriesgo = verificar_arriesgo()
 
-    lista_antigua = ['?', '?', '?', '?', '?']
+    lista_antigua = ["?", "?", "?", "?", "?"]
     i = 0
     return arriesgo, lista_antigua, i, tablero
 
-#Asigna los puntos a los jugadores
+
+# Asigna los puntos a los jugadores
 def asignar_puntos(puntos_obtenidos, orden_de_inicio):
     if puntos_obtenidos == -100:
         orden_de_inicio[0][1] += puntos_obtenidos
-        orden_de_inicio[1][1] += int(puntos_obtenidos/2)
+        orden_de_inicio[1][1] += int(puntos_obtenidos / 2)
     else:
         orden_de_inicio[0][1] += puntos_obtenidos
         orden_de_inicio[1][1] -= puntos_obtenidos
     return orden_de_inicio
-#Funcion hecha por Pedro Miguel
+
+
+# Funcion hecha por Pedro Miguel
 
 
 def leer_linea_archivo(archivo, default):
     linea = archivo.readline()
     lista = linea.lstrip(" ¡¿-_").rstrip(" .;:-_),?!\n").split(" ")
-    return lista if lista[0] != "" else default
+    i = 0
+    palabras = []
+    while i < len(lista):
+        palabras.append(lista[i].lower().lstrip("¡¿-_").rstrip(".;:-_),?!"))
+        i += 1
+    return palabras if palabras[0] != "" else default
+
 
 def leer_linea_csv(archivo, default):
     linea = archivo.readline()
     return linea if linea else default
+
 
 def obtener_config(archivoConfig):
     archivoConfig.seek(0)
@@ -169,59 +200,75 @@ def obtener_config(archivoConfig):
     aux, reiniciar_archivo_partidas = linea.rstrip("\n").split(",")
     return int(longitud_palabra), int(maximo_partidas), reiniciar_archivo_partidas
 
+
 def obtener_palabras(archivo1, archivo2, archivo3, archivoNuevo, longitud_palabra):
     archivo1.seek(0)
     archivo2.seek(0)
     archivo3.seek(0)
     dicc_palabras = {}
     linea1 = leer_linea_archivo(archivo1, "")
-    while linea1 != "":
-        for elemento in linea1.copy():
-            if not elemento.isalpha() or len(elemento) != longitud_palabra:
-                linea1.remove(elemento)
-            else:
-                if elemento not in dicc_palabras:
-                    dicc_palabras[elemento] = [1]
+    
+    while linea1 != ['fin']:
+        if linea1 != '':
+            for elemento in linea1.copy():
+                if not elemento.isalpha() or len(elemento) != longitud_palabra:
+                    linea1.remove(elemento)
                 else:
-                    dicc_palabras[elemento][0] += 1
-        linea1 = leer_linea_archivo(archivo1, "")
+                    if elemento not in dicc_palabras:
+                        dicc_palabras[elemento] = [1,0,0]
+                    else:
+                        dicc_palabras[elemento][0] += 1
+            linea1 = leer_linea_archivo(archivo1, "")
+        else: 
+            linea1 = leer_linea_archivo(archivo1, "")
+    print('termino el archivo 1')       
     linea2 = leer_linea_archivo(archivo2, "")
-    while linea2 != "":
-        for elemento in linea2.copy():
-            if not elemento.isalpha() or len(elemento) != longitud_palabra:
-                linea2.remove(elemento)
-            else:
-                if elemento not in dicc_palabras:
-                    dicc_palabras[elemento] = [0, 1]
-                elif len(dicc_palabras[elemento]) == 1:
-                    dicc_palabras[elemento].append(1)
+    while linea2 != ['fin','del','tomo','primero']:
+        if linea2 != '':
+            for elemento in linea2.copy():
+                if not elemento.isalpha() or len(elemento) != longitud_palabra:
+                    linea2.remove(elemento)
                 else:
-                    dicc_palabras[elemento][1] += 1
-        linea2 = leer_linea_archivo(archivo2, "")
+                    if elemento not in dicc_palabras:
+                        dicc_palabras[elemento] = [0,1,0]
+                    else:
+                        dicc_palabras[elemento][1] += 1
+            linea2 = leer_linea_archivo(archivo2, "")
+        else:
+          linea2 = leer_linea_archivo(archivo2, "")
+    print('termina archivo 2')
+            
     linea3 = leer_linea_archivo(archivo3, "")
-    while linea3 != "":
-        for elemento in linea3.copy():
-            if not elemento.isalpha() or len(elemento) != longitud_palabra:
-                linea3.remove(elemento)
-            else:
-                if elemento not in dicc_palabras:
-                    dicc_palabras[elemento] = [0, 0, 1]
-                elif len(dicc_palabras[elemento]) == 1:
-                    dicc_palabras[elemento].append(0)
-                    dicc_palabras[elemento].append(1)
-                elif len(dicc_palabras[elemento]) == 2:
-                    dicc_palabras[elemento].append(1)
+    while linea3 != ['fin']:
+       if linea3 != '':
+            for elemento in linea3.copy():
+                if not elemento.isalpha() or len(elemento) != longitud_palabra:
+                    linea3.remove(elemento)
                 else:
-                    dicc_palabras[elemento][2] += 1
-        linea3 = leer_linea_archivo(archivo1, "")
+                    if elemento not in dicc_palabras:
+                        dicc_palabras[elemento] = [0, 0, 1]
+                    else:
+                        dicc_palabras[elemento][2] += 1
+            linea3 = leer_linea_archivo(archivo3, "")
+       else:
+           linea3 = leer_linea_archivo(archivo3, "")
+    print('termina archivo 3')   
     print("Piola")
     lista_palabras = sorted(dicc_palabras.keys())
-    
+
     for elemento in lista_palabras:
-        archivoNuevo.write(elemento + "," + str(dicc_palabras[elemento][0]) + "," + str(dicc_palabras[elemento][1])
-        + "," + str(dicc_palabras[elemento][2]) + "\n")
+        archivoNuevo.write(
+            elemento
+            + ","
+            + str(dicc_palabras[elemento][0])
+            + ","
+            + str(dicc_palabras[elemento][1])
+            + ","
+            + str(dicc_palabras[elemento][2])
+            + "\n"
+        )
     return lista_palabras
-    
+
 
 def fiuble(orden_de_inicio, lista_palabras, longitud_palabra):
     # Funcion encargada de llevar a cabo el desempeño del juego, usando funciones anteriores.
@@ -251,10 +298,7 @@ def fiuble(orden_de_inicio, lista_palabras, longitud_palabra):
             cuentaIntentos += 1
     # parte FINAL, si se acierta con la palabra a adivinar
     if arriesgo == solucion:
-        print(
-            "\nPalabra a adivinar:",
-            *solucion
-        )
+        print("\nPalabra a adivinar:", *solucion)
 
         intento = validacion_letra(arriesgo, solucion)
         tablero[i] = f"{intento[0]} {intento[1]} {intento[2]} {intento[3]} {intento[4]}"
@@ -266,8 +310,9 @@ def fiuble(orden_de_inicio, lista_palabras, longitud_palabra):
         # Tiempo al final - inicio. Se divide por 60 para sacar la cant. de minutos, y su resto son los segundos
         tiempoM = int((fin - inicio) / 60)
         tiempoS = round((fin - inicio) % 60)
-        print("Tardaron " + str(tiempoM) +
-              " minutos y " + str(tiempoS) + " segundos.\n")
+        print(
+            "Tardaron " + str(tiempoM) + " minutos y " + str(tiempoS) + " segundos.\n"
+        )
         # Se busca en la lista de puntajes, cual se obtuvo segun cantidad de intentos
         puntosObtenidos = puntaje[cuentaIntentos - 1]
     else:
@@ -281,19 +326,25 @@ def fiuble(orden_de_inicio, lista_palabras, longitud_palabra):
         + f"El jugador {orden_de_inicio[1][0]} obtuvo un total de {orden_de_inicio[1][1]} puntos\n"
     )
 
-    volver_a_jugar(input("Desea seguir jugando? (S/N): "),
-                   orden_de_inicio, jugador_inicial)
+    volver_a_jugar(
+        input("Desea seguir jugando? (S/N): "), orden_de_inicio, jugador_inicial
+    )
+
+
 # Funcion hecha por Pedro Miguel, Nicolas Serrudo, Diego Lima, Lautaro Jovanovics, Pedro Perez y Jonathan Pistonesi.
 
 
 def main():
     # Funcion principal, encargada de tomar los nombres de los jugadores, mezclarlos, y luego ejecutar el juego.
     config = open("configuracion.csv", "r+")
-    longitud_palabra, maximo_partidas, reinciar_archivo_partidas = obtener_config(config)
+    longitud_palabra, maximo_partidas, reinciar_archivo_partidas = obtener_config(
+        config
+    )
     config.close()
-    
+
     jugador_1, jugador_2 = str(input("Ingrese el nombre del jugador 1: ")), str(
-        input("Ingrese el nombre del jugador 2: "))
+        input("Ingrese el nombre del jugador 2: ")
+    )
     inicio = jugador_1, jugador_2
     orden_de_inicio = [[random.choice(inicio), 0]]
 
@@ -301,12 +352,14 @@ def main():
         orden_de_inicio.append([jugador_2, 0])
     else:
         orden_de_inicio.append([jugador_1, 0])
-    
-    archivo1 = open("Cuentos.txt", "r")
+
+    archivo1 = open("Cuentos.txt", "r", encoding= "utf8")
     archivo2 = open("La araña negra - tomo 1.txt", "r")
     archivo3 = open("Las 1000 Noches y 1 Noche.txt", "r", encoding="utf8")
     archivoNuevo = open("palabras.csv", "w")
-    lista_palabras_posibles = obtener_palabras(archivo1, archivo2, archivo3, archivoNuevo, longitud_palabra)
+    lista_palabras_posibles = obtener_palabras(
+        archivo1, archivo2, archivo3, archivoNuevo, longitud_palabra
+    )
     print("FUNCIONAAAAAAAAAA (creo)")
     archivo1.close()
     archivo2.close()
