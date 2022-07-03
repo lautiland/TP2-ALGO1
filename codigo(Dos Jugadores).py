@@ -15,16 +15,20 @@ def color_de_letra(letra, color):
 # Funcion hecha por Pedro Miguel
 
 
-def verificar_arriesgo():
+def verificar_arriesgo(longitud_palabra):
     # Se encarga de validar que el ingreso de la palabra cumpla con los requisitos, reemplazar las tildes, y minusculas.2
     arriesgo = input("Arriesgo: ")
-    while len(arriesgo) != 5 or not arriesgo.isalpha():
+    while len(arriesgo) != longitud_palabra or not arriesgo.isalpha():
         if not arriesgo.isalpha():
             arriesgo = input(
                 "El arriesgo no puede contener numeros, simbolos o espacios.\nArriesgo: "
             )
-        elif len(arriesgo) != 5:
-            arriesgo = input("La palabra debe contener 5 letras.\nArriesgo: ")
+        elif len(arriesgo) != longitud_palabra:
+            arriesgo = input(
+                "La palabra debe contener"
+                + str(longitud_palabra)
+                + "letras.\nArriesgo: "
+            )
     arriesgo = arriesgo.upper()
     reemplazo = (("Á", "A"), ("É", "E"), ("Í", "I"), ("Ó", "O"), ("Ú", "U"))
     for a, b in reemplazo:
@@ -101,7 +105,9 @@ def validacion_sin_colores(arriesgo, solucion):
 # Funcion hecha por Nicolas Serrudo y Jonathan Pistonesi
 
 
-def volver_a_jugar(si_o_no, orden_de_inicio, jugador_inicial):
+def volver_a_jugar(
+    si_o_no, orden_de_inicio, jugador_inicial, lista_palabras_posibles, longitud_palabra
+):
     # Esta función se encarga de la validación del caracter ingresado y se pasa la variable acumulado(puntaje)
     while si_o_no not in "SsNn":
         si_o_no = str(
@@ -144,8 +150,15 @@ def print_text_while(solucion, orden_de_inicio, lista_antigua, i):
 
 
 # funcion que retorna constantes y un print iteracion inicio del juego
-def constantes_y_print_prewhile():
-    codigo_oculto = "? ? ? ? ?"
+def constantes_y_print_prewhile(longitud_palabra):
+    cuenta = 1
+    cuenta2 = 0
+    codigo_oculto = "? "
+    lista_antigua = ["?"]
+    while cuenta < longitud_palabra:
+        codigo_oculto += "? "
+        cuenta += 1
+
     # parte INICIO palabra a adivinar
     print("Palabra a adivinar: ", codigo_oculto)
     # parte INICIO tablero de signos de interogacion
@@ -153,9 +166,12 @@ def constantes_y_print_prewhile():
     for f in range(5):
         print(f"{tablero[f]} ")
     # parte INICIO te pide que arriesgues tu palabra
-    arriesgo = verificar_arriesgo()
+    arriesgo = verificar_arriesgo(longitud_palabra)
 
-    lista_antigua = ["?", "?", "?", "?", "?"]
+    for cuenta2 in range(longitud_palabra - 1):
+        lista_antigua.append("?")
+        cuenta2 += 1
+    print(lista_antigua)
     i = 0
     return arriesgo, lista_antigua, i, tablero
 
@@ -207,40 +223,39 @@ def obtener_palabras(archivo1, archivo2, archivo3, archivoNuevo, longitud_palabr
     archivo3.seek(0)
     dicc_palabras = {}
     linea1 = leer_linea_archivo(archivo1, "")
-    
-    while linea1 != ['fin']:
-        if linea1 != '':
+
+    while linea1 != ["fin"]:
+        if linea1 != "":
             for elemento in linea1.copy():
                 if not elemento.isalpha() or len(elemento) != longitud_palabra:
                     linea1.remove(elemento)
                 else:
                     if elemento not in dicc_palabras:
-                        dicc_palabras[elemento] = [1,0,0]
+                        dicc_palabras[elemento] = [1, 0, 0]
                     else:
                         dicc_palabras[elemento][0] += 1
             linea1 = leer_linea_archivo(archivo1, "")
-        else: 
+        else:
             linea1 = leer_linea_archivo(archivo1, "")
-    print('termino el archivo 1')       
+
     linea2 = leer_linea_archivo(archivo2, "")
-    while linea2 != ['fin','del','tomo','primero']:
-        if linea2 != '':
+    while linea2 != ["fin", "del", "tomo", "primero"]:
+        if linea2 != "":
             for elemento in linea2.copy():
                 if not elemento.isalpha() or len(elemento) != longitud_palabra:
                     linea2.remove(elemento)
                 else:
                     if elemento not in dicc_palabras:
-                        dicc_palabras[elemento] = [0,1,0]
+                        dicc_palabras[elemento] = [0, 1, 0]
                     else:
                         dicc_palabras[elemento][1] += 1
             linea2 = leer_linea_archivo(archivo2, "")
         else:
-          linea2 = leer_linea_archivo(archivo2, "")
-    print('termina archivo 2')
-            
+            linea2 = leer_linea_archivo(archivo2, "")
+
     linea3 = leer_linea_archivo(archivo3, "")
-    while linea3 != ['fin']:
-       if linea3 != '':
+    while linea3 != ["fin"]:
+        if linea3 != "":
             for elemento in linea3.copy():
                 if not elemento.isalpha() or len(elemento) != longitud_palabra:
                     linea3.remove(elemento)
@@ -250,10 +265,9 @@ def obtener_palabras(archivo1, archivo2, archivo3, archivoNuevo, longitud_palabr
                     else:
                         dicc_palabras[elemento][2] += 1
             linea3 = leer_linea_archivo(archivo3, "")
-       else:
-           linea3 = leer_linea_archivo(archivo3, "")
-    print('termina archivo 3')   
-    print("Piola")
+        else:
+            linea3 = leer_linea_archivo(archivo3, "")
+
     lista_palabras = sorted(dicc_palabras.keys())
 
     for elemento in lista_palabras:
@@ -279,8 +293,9 @@ def fiuble(orden_de_inicio, lista_palabras, longitud_palabra):
     inicio = time.time()
     solucion = random.choice(lista_palabras)
     solucion = solucion.upper()
+    print(solucion)
 
-    arriesgo, lista_antigua, i, tablero = constantes_y_print_prewhile()
+    arriesgo, lista_antigua, i, tablero = constantes_y_print_prewhile(longitud_palabra)
 
     # iteracion entre arriesgo y solucion
     while i != 5 and arriesgo != solucion:
@@ -288,20 +303,36 @@ def fiuble(orden_de_inicio, lista_palabras, longitud_palabra):
         lista_antigua = iteracion_palabra_a_adivinar(palabra_a_adivinar, lista_antigua)
         print_text_while(solucion, orden_de_inicio, lista_antigua, i)
         intento = validacion_letra(arriesgo, solucion)
-        tablero[i] = f"{intento[0]} {intento[1]} {intento[2]} {intento[3]} {intento[4]}"
+        largo = 0
+        tablero_aux = ""
+
+        while largo < len(intento):
+            tablero_aux += intento[largo] + " "
+            largo += 1
+
+        tablero[i] = tablero_aux
+
         i += 1
 
         for f in range(5):
             print(f"{tablero[f]} ")
         if i != 5:
-            arriesgo = verificar_arriesgo()
+            arriesgo = verificar_arriesgo(longitud_palabra)
             cuentaIntentos += 1
     # parte FINAL, si se acierta con la palabra a adivinar
     if arriesgo == solucion:
         print("\nPalabra a adivinar:", *solucion)
 
         intento = validacion_letra(arriesgo, solucion)
-        tablero[i] = f"{intento[0]} {intento[1]} {intento[2]} {intento[3]} {intento[4]}"
+
+        largo2 = 0
+        tablero_aux2 = ""
+
+        while largo2 < len(intento):
+            tablero_aux2 += intento[largo2] + " "
+            largo2 += 1
+
+        tablero[i] = tablero_aux2
 
         for f in range(5):
             print(f"{tablero[f]} ")
@@ -327,7 +358,11 @@ def fiuble(orden_de_inicio, lista_palabras, longitud_palabra):
     )
 
     volver_a_jugar(
-        input("Desea seguir jugando? (S/N): "), orden_de_inicio, jugador_inicial
+        input("Desea seguir jugando? (S/N): "),
+        orden_de_inicio,
+        jugador_inicial,
+        lista_palabras,
+        longitud_palabra,
     )
 
 
@@ -353,7 +388,7 @@ def main():
     else:
         orden_de_inicio.append([jugador_1, 0])
 
-    archivo1 = open("Cuentos.txt", "r", encoding= "utf8")
+    archivo1 = open("Cuentos.txt", "r", encoding="utf8")
     archivo2 = open("La araña negra - tomo 1.txt", "r")
     archivo3 = open("Las 1000 Noches y 1 Noche.txt", "r", encoding="utf8")
     archivoNuevo = open("palabras.csv", "w")
