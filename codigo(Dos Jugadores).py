@@ -1,6 +1,8 @@
 import random
 import time
 import utiles
+from datetime import date
+from datetime import datetime
 
 # Definimos los puntos ganados o perdidos segun la cantidad de intentos.
 puntaje = [50, 40, 30, 20, 10, -100]
@@ -106,9 +108,18 @@ def validacion_sin_colores(arriesgo, solucion):
 
 
 def volver_a_jugar(
-    si_o_no, orden_de_inicio, jugador_inicial, lista_palabras_posibles, longitud_palabra
+    si_o_no,
+    orden_de_inicio,
+    jugador_inicial,
+    lista_palabras_posibles,
+    longitud_palabra,
+    maximo_partidas,
+    cuenta_partidas,
+    aciertos_intentos,
+    partidas,
 ):
     # Esta función se encarga de la validación del caracter ingresado y se pasa la variable acumulado(puntaje)
+    print(aciertos_intentos)
     while si_o_no not in "SsNn":
         si_o_no = str(
             input("Ingreso un caracter inválido, vuelva a ingresar su respuesta: ")
@@ -120,8 +131,36 @@ def volver_a_jugar(
                 orden_de_inicio[1],
                 orden_de_inicio[0],
             )
-        fiuble(orden_de_inicio, lista_palabras_posibles, longitud_palabra)
+        cuenta_partidas += 1
+        fiuble(
+            orden_de_inicio,
+            lista_palabras_posibles,
+            longitud_palabra,
+            maximo_partidas,
+            cuenta_partidas,
+            aciertos_intentos,
+            partidas,
+        )
     elif si_o_no in "Nn":
+        ordenado = sorted(
+            aciertos_intentos.items(), key=lambda x: x[1], reverse=True
+        )
+        print(ordenado)
+        j = 0
+        for j in range(len(ordenado)):
+            partidas.write(
+                datetime.today().strftime("%d-%m-%Y")
+                + ","
+                + datetime.today().strftime("%H:%M")
+                + ","
+                + ordenado[j][0]
+                + ","
+                + str(ordenado[j][1][0])
+                + ","
+                + str(ordenado[j][1][1])
+                + "\n"
+            )
+
         if orden_de_inicio[0][1] > orden_de_inicio[1][1]:
             print(
                 f"\nEl ganador es {orden_de_inicio[0][0]} con un total de {orden_de_inicio[0][1]}."
@@ -171,7 +210,6 @@ def constantes_y_print_prewhile(longitud_palabra):
     for cuenta2 in range(longitud_palabra - 1):
         lista_antigua.append("?")
         cuenta2 += 1
-    print(lista_antigua)
     i = 0
     return arriesgo, lista_antigua, i, tablero
 
@@ -284,9 +322,19 @@ def obtener_palabras(archivo1, archivo2, archivo3, archivoNuevo, longitud_palabr
     return lista_palabras
 
 
-def fiuble(orden_de_inicio, lista_palabras, longitud_palabra):
+def fiuble(
+    orden_de_inicio,
+    lista_palabras,
+    longitud_palabra,
+    maximo_partidas,
+    cuenta_partidas,
+    aciertos_intentos,
+    partidas,
+):
+
     # Funcion encargada de llevar a cabo el desempeño del juego, usando funciones anteriores.
     jugador_inicial = orden_de_inicio[0][0]
+    print(cuenta_partidas)
     print(f"\nEl primer turno es de {jugador_inicial}")
 
     cuentaIntentos = 1
@@ -299,6 +347,7 @@ def fiuble(orden_de_inicio, lista_palabras, longitud_palabra):
 
     # iteracion entre arriesgo y solucion
     while i != 5 and arriesgo != solucion:
+        print(orden_de_inicio)
         palabra_a_adivinar = validacion_sin_colores(arriesgo, solucion)
         lista_antigua = iteracion_palabra_a_adivinar(palabra_a_adivinar, lista_antigua)
         print_text_while(solucion, orden_de_inicio, lista_antigua, i)
@@ -319,6 +368,7 @@ def fiuble(orden_de_inicio, lista_palabras, longitud_palabra):
         if i != 5:
             arriesgo = verificar_arriesgo(longitud_palabra)
             cuentaIntentos += 1
+        aciertos_intentos[orden_de_inicio[0][0]][1] += 1
     # parte FINAL, si se acierta con la palabra a adivinar
     if arriesgo == solucion:
         print("\nPalabra a adivinar:", *solucion)
@@ -337,6 +387,7 @@ def fiuble(orden_de_inicio, lista_palabras, longitud_palabra):
         for f in range(5):
             print(f"{tablero[f]} ")
         fin = time.time()
+        aciertos_intentos[orden_de_inicio[0][0]][0] += 1
         print(f"El ganador es {orden_de_inicio[0][0]}\n")
         # Tiempo al final - inicio. Se divide por 60 para sacar la cant. de minutos, y su resto son los segundos
         tiempoM = int((fin - inicio) / 60)
@@ -357,13 +408,31 @@ def fiuble(orden_de_inicio, lista_palabras, longitud_palabra):
         + f"El jugador {orden_de_inicio[1][0]} obtuvo un total de {orden_de_inicio[1][1]} puntos\n"
     )
 
-    volver_a_jugar(
-        input("Desea seguir jugando? (S/N): "),
-        orden_de_inicio,
-        jugador_inicial,
-        lista_palabras,
-        longitud_palabra,
-    )
+    if cuenta_partidas < maximo_partidas:
+        volver_a_jugar(
+            input("Desea seguir jugando? (S/N): "),
+            orden_de_inicio,
+            jugador_inicial,
+            lista_palabras,
+            longitud_palabra,
+            maximo_partidas,
+            cuenta_partidas,
+            aciertos_intentos,
+            partidas,
+        )
+    else:
+        print("Ha llegado al maximo de partidas que es: " + str(maximo_partidas))
+        volver_a_jugar(
+            "N",
+            orden_de_inicio,
+            jugador_inicial,
+            lista_palabras,
+            longitud_palabra,
+            maximo_partidas,
+            cuenta_partidas,
+            aciertos_intentos,
+            partidas,
+        )
 
 
 # Funcion hecha por Pedro Miguel, Nicolas Serrudo, Diego Lima, Lautaro Jovanovics, Pedro Perez y Jonathan Pistonesi.
@@ -387,11 +456,13 @@ def main():
         orden_de_inicio.append([jugador_2, 0])
     else:
         orden_de_inicio.append([jugador_1, 0])
+    aciertos_intentos = {jugador_1: [0, 0], jugador_2: [0, 0]}
 
     archivo1 = open("Cuentos.txt", "r", encoding="utf8")
     archivo2 = open("La araña negra - tomo 1.txt", "r")
     archivo3 = open("Las 1000 Noches y 1 Noche.txt", "r", encoding="utf8")
     archivoNuevo = open("palabras.csv", "w")
+    partidas = open("partidas.csv", "w")
     lista_palabras_posibles = obtener_palabras(
         archivo1, archivo2, archivo3, archivoNuevo, longitud_palabra
     )
@@ -400,7 +471,16 @@ def main():
     archivo2.close()
     archivo3.close()
     archivoNuevo.close()
-    fiuble(orden_de_inicio, lista_palabras_posibles, longitud_palabra)
+    cuenta_partidas = 1
+    fiuble(
+        orden_de_inicio,
+        lista_palabras_posibles,
+        longitud_palabra,
+        maximo_partidas,
+        cuenta_partidas,
+        aciertos_intentos,
+        partidas,
+    )
 
 
 main()
