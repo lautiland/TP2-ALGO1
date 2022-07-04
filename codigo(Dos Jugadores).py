@@ -280,17 +280,20 @@ def obtener_config(archivoConfig):
     aux, reiniciar_archivo_partidas = linea.strip("\n").split(",")
 
     if not(reiniciar_archivo_partidas):
-        reiniciar_archivo_partidas =False
+        reiniciar_archivo_partidas = "a"
         valor_reinicio= "Deshabilitado"
         print("---- Reinicio archivo registro de partidas, valor por defecto")
         print("=============================================")
 
     elif reiniciar_archivo_partidas:
+        reiniciar_archivo_partidas = "w"
         valor_reinicio= "Habilitado"
         print("---- Reinicio archivo registro de partidas, valor por defecto")
         print("=============================================")
+    
     print("Longitud de palabras: {} - Maximo de partidas de: {} - El reinicio del archivo registro de partidas fue {}".format(longitud_palabra, maximo_partidas,valor_reinicio))
     print("---------------------------------------------")
+
     return int(longitud_palabra), int(maximo_partidas), reiniciar_archivo_partidas
 
 
@@ -504,7 +507,7 @@ def main():
     archivo2 = open("La araña negra - tomo 1.txt", "r", encoding="utf8")
     archivo3 = open("Las 1000 Noches y 1 Noche.txt", "r", encoding="utf8")
     archivoNuevo = open("palabras.csv", "w", encoding="utf8")
-    partidas = open("partidas.csv", "a")
+    partidas = open("partidas.csv", reinciar_archivo_partidas)
     lista_palabras_posibles = obtener_palabras(
         archivo1, archivo2, archivo3, archivoNuevo, longitud_palabra
     )
