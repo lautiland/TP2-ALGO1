@@ -249,37 +249,39 @@ def leer_linea_archivo(archivo, default):
 
 def leer_linea_csv(archivo, default):
     linea = archivo.readline()
-    
+    defecto_o_configuracion = True
     if linea == "\n" or linea == "":
        linea = default
-       print("faltaron agregar valores de configuracion, se usan valores por default")
-    return linea
+       defecto_o_configuracion = False
+    return linea,defecto_o_configuracion
+
 
 
 def obtener_config(archivoConfig):
     archivoConfig.seek(0)
 
-    linea = leer_linea_csv(archivoConfig, "longitud_palabra_secreta,5")
+    linea,defecto_o_configuracion = leer_linea_csv(archivoConfig, "longitud_palabra_secreta,5")
     aux, longitud_palabra = linea.strip("\n").split(",")
-    if not(longitud_palabra):
+    if not(longitud_palabra) or defecto_o_configuracion == False:
         longitud_palabra = 5
         print("---- Longitud de palabra, valor por defecto")
     elif longitud_palabra:
         print("---- Longitud de palabra, valor por configuracion")
 
-    linea = leer_linea_csv(archivoConfig, "maximo_partidas,5")
+
+    linea,defecto_o_configuracion = leer_linea_csv(archivoConfig, "maximo_partidas,5")
     aux, maximo_partidas = linea.strip("\n").split(",")
-    if not(maximo_partidas):
+    if not(maximo_partidas) or defecto_o_configuracion == False:
         maximo_partidas = 5
         print("---- Maxima cantidad de partidas, valor por defecto")
     elif maximo_partidas:
         print("---- Maxima cantidad de partidas, valor por configuracion")
 
 
-    linea = leer_linea_csv(archivoConfig, "reiniciar_archivo,False")
+    linea,defecto_o_configuracion = leer_linea_csv(archivoConfig, "reiniciar_archivo,False")
     aux, reiniciar_archivo_partidas = linea.strip("\n").split(",")
 
-    if not(reiniciar_archivo_partidas):
+    if not(reiniciar_archivo_partidas)or defecto_o_configuracion == False:
         reiniciar_archivo_partidas = "a"
         valor_reinicio= "Deshabilitado"
         print("---- Reinicio archivo registro de partidas, valor por defecto")
@@ -288,7 +290,7 @@ def obtener_config(archivoConfig):
     elif reiniciar_archivo_partidas:
         reiniciar_archivo_partidas = "w"
         valor_reinicio= "Habilitado"
-        print("---- Reinicio archivo registro de partidas, valor por defecto")
+        print("---- Reinicio archivo registro de partidas, valor por configuracion")
         print("=============================================")
     
     print("Longitud de palabras: {} - Maximo de partidas de: {} - El reinicio del archivo registro de partidas fue {}".format(longitud_palabra, maximo_partidas,valor_reinicio))
