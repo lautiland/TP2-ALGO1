@@ -239,19 +239,58 @@ def leer_linea_archivo(archivo, default):
     return palabras if palabras[0] != "" else default
 
 
+'''def impresion_configuracion(longitud_palabra, maximo_partidas,reiniciar_archivo_partidas):
+    if reiniciar_archivo_partidas:
+        reinicio_archivos = "Habilitado"
+    else:
+        reinicio_archivos = "Deshabilitado"
+    print("Longitud de palabras: {} - Maximo de partidas de: {} - El reinicio del archivo registro de partidas fue {}".format(longitud_palabra, maximo_partidas,reinicio_archivos))
+'''
+
 def leer_linea_csv(archivo, default):
     linea = archivo.readline()
-    return linea if linea else default
+    
+    if linea == "\n" or linea == "":
+       linea = default
+       print("faltaron agregar valores de configuracion, se usan valores por default")
+    return linea
 
 
 def obtener_config(archivoConfig):
     archivoConfig.seek(0)
+
     linea = leer_linea_csv(archivoConfig, "longitud_palabra_secreta,5")
-    aux, longitud_palabra = linea.rstrip("\n").split(",")
+    aux, longitud_palabra = linea.strip("\n").split(",")
+    if not(longitud_palabra):
+        longitud_palabra = 5
+        print("---- Longitud de palabra, valor por defecto")
+    elif longitud_palabra:
+        print("---- Longitud de palabra, valor por configuracion")
+
     linea = leer_linea_csv(archivoConfig, "maximo_partidas,5")
-    aux, maximo_partidas = linea.rstrip("\n").split(",")
+    aux, maximo_partidas = linea.strip("\n").split(",")
+    if not(maximo_partidas):
+        maximo_partidas = 5
+        print("---- Maxima cantidad de partidas, valor por defecto")
+    elif maximo_partidas:
+        print("---- Maxima cantidad de partidas, valor por configuracion")
+
+
     linea = leer_linea_csv(archivoConfig, "reiniciar_archivo,False")
-    aux, reiniciar_archivo_partidas = linea.rstrip("\n").split(",")
+    aux, reiniciar_archivo_partidas = linea.strip("\n").split(",")
+
+    if not(reiniciar_archivo_partidas):
+        reiniciar_archivo_partidas =False
+        valor_reinicio= "Deshabilitado"
+        print("---- Reinicio archivo registro de partidas, valor por defecto")
+        print("=============================================")
+
+    elif reiniciar_archivo_partidas:
+        valor_reinicio= "Habilitado"
+        print("---- Reinicio archivo registro de partidas, valor por defecto")
+        print("=============================================")
+    print("Longitud de palabras: {} - Maximo de partidas de: {} - El reinicio del archivo registro de partidas fue {}".format(longitud_palabra, maximo_partidas,valor_reinicio))
+    print("---------------------------------------------")
     return int(longitud_palabra), int(maximo_partidas), reiniciar_archivo_partidas
 
 
