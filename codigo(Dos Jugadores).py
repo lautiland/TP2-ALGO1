@@ -459,9 +459,9 @@ def main():
     aciertos_intentos = {jugador_1: [0, 0], jugador_2: [0, 0]}
 
     archivo1 = open("Cuentos.txt", "r", encoding="utf8")
-    archivo2 = open("La araña negra - tomo 1.txt", "r")
+    archivo2 = open("La araña negra - tomo 1.txt", "r", encoding="utf8")
     archivo3 = open("Las 1000 Noches y 1 Noche.txt", "r", encoding="utf8")
-    archivoNuevo = open("palabras.csv", "w")
+    archivoNuevo = open("palabras.csv", "w", encoding="utf8")
     partidas = open("partidas.csv", "w")
     lista_palabras_posibles = obtener_palabras(
         archivo1, archivo2, archivo3, archivoNuevo, longitud_palabra
