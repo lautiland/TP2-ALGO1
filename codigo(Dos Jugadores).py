@@ -341,6 +341,9 @@ def fiuble(
     inicio = time.time()
     solucion = random.choice(lista_palabras)
     solucion = solucion.upper()
+    reemplazo = (("Á", "A"), ("É", "E"), ("Í", "I"), ("Ó", "O"), ("Ú", "U"))
+    for a, b in reemplazo:
+        solucion = solucion.replace(a, b)   
     print(solucion)
 
     arriesgo, lista_antigua, i, tablero = constantes_y_print_prewhile(longitud_palabra)
@@ -467,6 +470,7 @@ def main():
         archivo1, archivo2, archivo3, archivoNuevo, longitud_palabra
     )
     print("FUNCIONAAAAAAAAAA (creo)")
+   
     archivo1.close()
     archivo2.close()
     archivo3.close()
