@@ -465,7 +465,7 @@ def main():
     archivo2 = open("La araña negra - tomo 1.txt", "r", encoding="utf8")
     archivo3 = open("Las 1000 Noches y 1 Noche.txt", "r", encoding="utf8")
     archivoNuevo = open("palabras.csv", "w", encoding="utf8")
-    partidas = open("partidas.csv", "w")
+    partidas = open("partidas.csv", "a")
     lista_palabras_posibles = obtener_palabras(
         archivo1, archivo2, archivo3, archivoNuevo, longitud_palabra
     )
