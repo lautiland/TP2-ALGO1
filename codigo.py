@@ -2,7 +2,7 @@ import random
 import time
 import utiles
 from cgitb import grey
-from re import T
+from re import M, T
 from datetime import date
 from datetime import datetime
 from tkinter import *
@@ -79,6 +79,7 @@ def login(jugador):
 
             if clav1_comp_reg != clav2_comp_reg:
                 estado_reg =  False
+                messagebox.showerror(message="Las contraseñas son diferentes")
 
             if usu_comp_reg and estado_reg:
                 condicion_alpha = True
@@ -92,6 +93,7 @@ def login(jugador):
                         condicion_alpha = False
                 if (not condicion_largo) or (not condicion_alpha):
                     estado_reg = False
+                    messagebox.showerror(message="El nombre no cumple los requisitos")
 
             if clav1_comp_reg and estado_reg:
                 condicion_general = True
@@ -116,17 +118,20 @@ def login(jugador):
                     if x.islower():
                         condicion_minuscula = True
 
-                if (not condicion_general) or (not condicion_mayuscula) or (not condicion_minuscula) or (not condicion_numero) or (not condicion_guion):
+                if (not condicion_len) or (not condicion_general) or (not condicion_mayuscula) or (not condicion_minuscula) or (not condicion_numero) or (not condicion_guion):
                     estado_reg = False
+                    messagebox.showerror(message="La contraseña no cumple los requisitos")
 
             while usuario and estado_reg:
                 if usu_comp_reg == usuario:
                     estado_reg = False
+                    messagebox.showerror(message="Ya existe un usuario con ese nombre")
 
                 while usuario and estado_reg and usu_comp_reg != usuario:
                     usuario, clave = leer_archivo(archivo)
                     if usu_comp_reg == usuario:
                         estado_reg = False
+                        messagebox.showerror(message="Ya existe un usuario con ese nombre")
 
             if estado_reg:
 
@@ -134,9 +139,6 @@ def login(jugador):
                 archivo.write(usu_comp_reg + "," + clav1_comp_reg + "\n")
 
                 messagebox.showinfo(message="Registro Exitoso!")
-
-            else:
-                messagebox.showerror(message="Error de registro")
 
             archivo.close()
 
