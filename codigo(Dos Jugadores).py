@@ -119,7 +119,6 @@ def volver_a_jugar(
     partidas,
 ):
     # Esta función se encarga de la validación del caracter ingresado y se pasa la variable acumulado(puntaje)
-    print(aciertos_intentos)
     while si_o_no not in "SsNn":
         si_o_no = str(
             input("Ingreso un caracter inválido, vuelva a ingresar su respuesta: ")
@@ -145,7 +144,9 @@ def volver_a_jugar(
         ordenado = sorted(
             aciertos_intentos.items(), key=lambda x: x[1], reverse=True
         )
-        print(ordenado)
+
+        print(f"El jugador {ordenado[0][0]} tiene {ordenado[0][1][0]} aciertos y {ordenado[0][1][1]} intentos")
+        print(f"El jugador {ordenado[1][0]} tiene {ordenado[1][1][0]} aciertos y {ordenado[1][1][1]} intentos")
         j = 0
         for j in range(len(ordenado)):
             partidas.write(
