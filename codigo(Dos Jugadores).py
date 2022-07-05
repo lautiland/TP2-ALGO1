@@ -281,12 +281,16 @@ def obtener_config(archivoConfig):
     linea,defecto_o_configuracion = leer_linea_csv(archivoConfig, "reiniciar_archivo,False")
     aux, reiniciar_archivo_partidas = linea.strip("\n").split(",")
 
-    if not(reiniciar_archivo_partidas)or defecto_o_configuracion == False:
+    if (reiniciar_archivo_partidas == False )or defecto_o_configuracion == False:
         reiniciar_archivo_partidas = "a"
         valor_reinicio= "Deshabilitado"
-        print("---- Reinicio archivo registro de partidas, valor por defecto")
+        print("---- Reinicio arhivo registro de partidas, valor por defecto")
         print("=============================================")
-
+    elif (reiniciar_archivo_partidas == False) or defecto_o_configuracion == True:
+        reiniciar_archivo_partidas = "a"
+        valor_reinicio= "Deshabilitado"
+        print("---- Reinicio archivo registro de partidas, valor por configuracion")
+        print("=============================================")
     elif reiniciar_archivo_partidas:
         reiniciar_archivo_partidas = "w"
         valor_reinicio= "Habilitado"
