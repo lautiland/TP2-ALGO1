@@ -22,6 +22,9 @@ def leer_archivo(archivo):
 
     return devolver
 
+def cerrar_ventana(ventana):
+    ventana.destroy()
+
 def login(jugador):
 
     raiz = Tk()
@@ -140,8 +143,9 @@ def login(jugador):
 
                 messagebox.showinfo(message="Registro Exitoso!")
 
-            archivo.close()
+                cerrar_ventana(ventana_2)
 
+            archivo.close()
 
         aceptar = Button(ventana_2, text= "Aceptar", command= comprobar_registro)
         aceptar.grid(row = 3 , column= 1, padx= 10, pady=10 )
@@ -197,8 +201,9 @@ def login(jugador):
 
         if estado and usu_comp_log and clav_comp_log:
             messagebox.showinfo(message="Ingresado Exitoso!")
- 
             user = usuario
+            cerrar_ventana(frame1)
+            cerrar_ventana(raiz)
                 
         else: 
             messagebox.showerror(message="Usuario o clave incorrectos")
