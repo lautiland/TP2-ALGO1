@@ -383,7 +383,7 @@ def fiuble(
 
     # Funcion encargada de llevar a cabo el desempeño del juego, usando funciones anteriores.
     jugador_inicial = orden_de_inicio[0][0]
-    print(cuenta_partidas)
+    print(f"Partida Numero: {cuenta_partidas}")
     print(f"\nEl primer turno es de {jugador_inicial}")
 
     cuentaIntentos = 1
@@ -393,7 +393,8 @@ def fiuble(
     reemplazo = (("Á", "A"), ("É", "E"), ("Í", "I"), ("Ó", "O"), ("Ú", "U"))
     for a, b in reemplazo:
         solucion = solucion.replace(a, b)   
-    print(solucion)
+
+    print(solucion)##########Solucion Palabra a Adivinar###########
 
     arriesgo, lista_antigua, i, tablero = constantes_y_print_prewhile(longitud_palabra)
 
@@ -518,8 +519,7 @@ def main():
     lista_palabras_posibles = obtener_palabras(
         archivo1, archivo2, archivo3, archivoNuevo, longitud_palabra
     )
-    print("FUNCIONAAAAAAAAAA (creo)")
-   
+
     archivo1.close()
     archivo2.close()
     archivo3.close()
