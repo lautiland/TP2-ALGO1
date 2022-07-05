@@ -108,7 +108,7 @@ def login(jugador):
                     elif x in "_-":
                         condicion_guion = True
 
-                    elif x.isnum():
+                    elif x.isnumeric():
                         condicion_numero = True
                     elif x.isupper():
                         condicion_mayuscula = True
