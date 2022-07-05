@@ -80,42 +80,43 @@ def login(jugador):
             if clav1_comp_reg != clav2_comp_reg:
                 estado_reg =  False
 
-            if 4<=len(usu_comp_reg)<=15 and estado_reg :
-                condicion_alpha = False
-                condicion_num = False
-                condicion_guion = False
+            if usu_comp_reg and estado_reg:
+                condicion_alpha = True
+                condicion_largo = False
+
+                if 4<=len(usu_comp_reg)<=15:
+                    condicion_largo = True
 
                 for x in usu_comp_reg :
-                    if (x.isalpha()):
-                        condicion_alpha = True
-                    elif x == "_":
-                        condicion_guion = True
-                    elif(x.isnumeric()):
-                        condicion_num = True
-                if not condicion_num and not  condicion_alpha and not condicion_guion:
+                    if (x in " #!$%&/()=?¡*¨¨][}{+-.,;:"):
+                        condicion_alpha = False
+                if (not condicion_largo) or (not condicion_alpha):
                     estado_reg = False
 
-            if 8<=len(clav1_comp_reg)<=12 and estado_reg:
+            if clav1_comp_reg and estado_reg:
                 condicion_general = True
                 condicion_mayuscula = False
                 condicion_minuscula = False
                 condicion_numero = False
                 condicion_guion = False
+                condicion_len = False
+
+                if 8<=len(clav1_comp_reg)<=12:
+                    condicion_len = True
+
                 for x in clav1_comp_reg:
                     if x in "ÁÉÍÓÚáéíóú":
                         condicion_general = False
-
-                    elif x in "_-":
+                    if x in "_-":
                         condicion_guion = True
-
-                    elif x.isnumeric():
+                    if x.isnumeric():
                         condicion_numero = True
-                    elif x.isupper():
+                    if x.isupper():
                         condicion_mayuscula = True
-                    elif x.islower():
+                    if x.islower():
                         condicion_minuscula = True
 
-                if not condicion_general and not condicion_mayuscula and not condicion_minuscula and not condicion_numero and not condicion_guion:
+                if (not condicion_general) or (not condicion_mayuscula) or (not condicion_minuscula) or (not condicion_numero) or (not condicion_guion):
                     estado_reg = False
 
             while usuario and estado_reg:
