@@ -11,7 +11,6 @@ from setuptools import Command
 
 # Definimos los puntos ganados o perdidos segun la cantidad de intentos.
 puntaje = [50, 40, 30, 20, 10, -100]
-# Modularizacion hecha por Lautaro Jovanovics, Nicolas Serrudo , Diego Lima y Jonathan Pistonesi.
 
 def leer_archivo(archivo):
     #Función encargada de en base a un nombre de un archivo ya abrierto en algun formato de lectura, devolver las lineas del mismo
@@ -26,6 +25,7 @@ def leer_archivo(archivo):
 def cerrar_ventana(ventana):
     #Funcion encargada de cerrar una ventana especificada
     ventana.destroy()
+#Funcion hecha por Lautaro Jovanovics
 
 def login(jugador):
     #Funcion maestra del login, que añade la interfaz gráfica al inicio de sesión y registro
@@ -226,14 +226,12 @@ def login(jugador):
     boton2.config(bd=5, relief=GROOVE, bg="light blue", cursor="hand2")
 
     raiz.mainloop()
+# Funcion hecha por Jonathan Pistonesi y Lautaro Jovanovics
 
 def color_de_letra(letra, color):
     # Utiliza el archivo utiles.py para obtener los colores correspondientes a la validacion de la letra.1
     return utiles.obtener_color(color) + letra.upper() + utiles.obtener_color("Defecto")
-
-
 # Funcion hecha por Pedro Miguel
-
 
 def verificar_arriesgo(longitud_palabra):
     # Se encarga de validar que el ingreso de la palabra cumpla con los requisitos, reemplazar las tildes, y minusculas.2
@@ -254,10 +252,7 @@ def verificar_arriesgo(longitud_palabra):
     for a, b in reemplazo:
         arriesgo = arriesgo.replace(a, b)
     return arriesgo
-
-
 # Funcion hecha por Pedro Miguel
-
 
 def verificar_amarillas(arriesgo, solucion):
     # Funcion encargada de comprobar que la letra exista en la palabra evitando repeticiones, si es que no esta en la posicion correcta.1
@@ -274,10 +269,7 @@ def verificar_amarillas(arriesgo, solucion):
     for i in letras_amarillas:
         letras_amarillas[i] = solucion.count(i) - letras_verdes[i]
     return letras_amarillas
-
-
 # Funcion hecha por Pedro Miguel
-
 
 def validacion_letra(arriesgo, solucion):
     # Usando funciones anteriores, asigna los colores correspondientes a cada letra.1
@@ -292,10 +284,7 @@ def validacion_letra(arriesgo, solucion):
         else:
             output.append(color_de_letra(i, "GrisOscuro"))
     return output
-
-
 # Funcion hecha por Pedro Miguel
-
 
 def iteracion_palabra_a_adivinar(lista_nueva, lista_antigua):
     # Funcion encargada de guardar las letras acertadas entre intentos.
@@ -306,10 +295,7 @@ def iteracion_palabra_a_adivinar(lista_nueva, lista_antigua):
         else:
             agregarse.append(j)
     return agregarse
-
-
 # Funcion hecha por Nicolas Serrudo y Jonathan Pistonesi
-
 
 def validacion_sin_colores(arriesgo, solucion):
     # Funcion que compara el arriesgo con la solucion, validando las letras pero sin color.
@@ -320,10 +306,7 @@ def validacion_sin_colores(arriesgo, solucion):
         else:
             output.append("?")
     return output
-
-
 # Funcion hecha por Nicolas Serrudo y Jonathan Pistonesi
-
 
 def volver_a_jugar(
     si_o_no,
@@ -392,8 +375,6 @@ def volver_a_jugar(
             print(
                 f"\nAmbos jugadores han empatado con un total de {orden_de_inicio[0][1]} puntos."
             )
-
-
 # Funcion hecha por Pedro Perez
 
 # imprime en pantalla los turnos, el intento de palabra, y solucion
@@ -405,7 +386,6 @@ def print_text_while(solucion, orden_de_inicio, lista_antigua, i):
         orden_de_inicio[0], orden_de_inicio[1] = orden_de_inicio[1], orden_de_inicio[0]
         print(f"\nAhora es el turno de {orden_de_inicio[0][0]}")
         print("Palabra a adivinar:", *lista_antigua)
-
 
 # funcion que retorna constantes y un print iteracion inicio del juego
 def constantes_y_print_prewhile(longitud_palabra):
@@ -432,7 +412,6 @@ def constantes_y_print_prewhile(longitud_palabra):
     i = 0
     return arriesgo, lista_antigua, i, tablero
 
-
 # Asigna los puntos a los jugadores
 def asignar_puntos(puntos_obtenidos, orden_de_inicio):
     if puntos_obtenidos == -100:
@@ -442,10 +421,7 @@ def asignar_puntos(puntos_obtenidos, orden_de_inicio):
         orden_de_inicio[0][1] += puntos_obtenidos
         orden_de_inicio[1][1] -= puntos_obtenidos
     return orden_de_inicio
-
-
 # Funcion hecha por Pedro Miguel
-
 
 def leer_linea_archivo(archivo, default):
     linea = archivo.readline()
@@ -456,8 +432,7 @@ def leer_linea_archivo(archivo, default):
         palabras.append(lista[i].lower().lstrip("¡¿-_").rstrip(".;:-_),?!"))
         i += 1
     return palabras if palabras[0] != "" else default
-
-
+# Funcion hecha por Pedro Miguel
 
 def leer_linea_csv(archivo, default):
     linea = archivo.readline()
@@ -466,8 +441,7 @@ def leer_linea_csv(archivo, default):
        linea = default
        defecto_o_configuracion = False
     return linea,defecto_o_configuracion
-
-
+# Funcion hecha por Pedro Miguel
 
 def obtener_config(archivoConfig):
     archivoConfig.seek(0)
@@ -513,7 +487,7 @@ def obtener_config(archivoConfig):
     print("---------------------------------------------")
 
     return int(longitud_palabra), int(maximo_partidas), reiniciar_archivo_partidas
-
+# Funcion hecha por Nicolas Serrudo y Pedro Perez
 
 def obtener_palabras(archivo1, archivo2, archivo3, archivoNuevo, longitud_palabra):
     archivo1.seek(0)
@@ -580,7 +554,7 @@ def obtener_palabras(archivo1, archivo2, archivo3, archivoNuevo, longitud_palabr
             + "\n"
         )
     return lista_palabras
-
+# Funcion hecha por Pedro Miguel
 
 def fiuble(
     orden_de_inicio,
@@ -696,10 +670,7 @@ def fiuble(
             aciertos_intentos,
             partidas,
         )
-
-
 # Funcion hecha por Pedro Miguel, Nicolas Serrudo, Diego Lima, Lautaro Jovanovics, Pedro Perez y Jonathan Pistonesi.
-
 
 def main():
     # Funcion principal, encargada de tomar los nombres de los jugadores, mezclarlos, y luego ejecutar el juego.
@@ -757,3 +728,7 @@ def main():
         )
 
 main()
+
+#-----------------------------------------------------------------------------------------------------------------#
+#------- Modularizacion hecha por Lautaro Jovanovics, Nicolas Serrudo , Diego Lima y Jonathan Pistonesi.----------#
+#-----------------------------------------------------------------------------------------------------------------#
