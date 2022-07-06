@@ -14,6 +14,7 @@ puntaje = [50, 40, 30, 20, 10, -100]
 # Modularizacion hecha por Lautaro Jovanovics, Nicolas Serrudo , Diego Lima y Jonathan Pistonesi.
 
 def leer_archivo(archivo):
+    #Función encargada de en base a un nombre de un archivo ya abrierto en algun formato de lectura, devolver las lineas del mismo
     linea = archivo.readline()
     if linea:
         devolver = linea.rstrip("\n").split(",")
@@ -23,9 +24,11 @@ def leer_archivo(archivo):
     return devolver
 
 def cerrar_ventana(ventana):
+    #Funcion encargada de cerrar una ventana especificada
     ventana.destroy()
 
 def login(jugador):
+    #Funcion maestra del login, que añade la interfaz gráfica al inicio de sesión y registro
 
     raiz = Tk()
     raiz.config(bg="light grey")
@@ -36,6 +39,7 @@ def login(jugador):
     raiz.resizable(False, False)
 
     def register():
+        #Funcion que permite registrar un usuario y contraseña
 
         ventana_2 = Toplevel()
         ventana_2.title("Register")
@@ -241,9 +245,9 @@ def verificar_arriesgo(longitud_palabra):
             )
         elif len(arriesgo) != longitud_palabra:
             arriesgo = input(
-                "La palabra debe contener"
+                "La palabra debe contener "
                 + str(longitud_palabra)
-                + "letras.\nArriesgo: "
+                + " letras.\nArriesgo: "
             )
     arriesgo = arriesgo.upper()
     reemplazo = (("Á", "A"), ("É", "E"), ("Í", "I"), ("Ó", "O"), ("Ú", "U"))
@@ -454,13 +458,6 @@ def leer_linea_archivo(archivo, default):
     return palabras if palabras[0] != "" else default
 
 
-'''def impresion_configuracion(longitud_palabra, maximo_partidas,reiniciar_archivo_partidas):
-    if reiniciar_archivo_partidas:
-        reinicio_archivos = "Habilitado"
-    else:
-        reinicio_archivos = "Deshabilitado"
-    print("Longitud de palabras: {} - Maximo de partidas de: {} - El reinicio del archivo registro de partidas fue {}".format(longitud_palabra, maximo_partidas,reinicio_archivos))
-'''
 
 def leer_linea_csv(archivo, default):
     linea = archivo.readline()
@@ -608,13 +605,12 @@ def fiuble(
     for a, b in reemplazo:
         solucion = solucion.replace(a, b)   
 
-    print(solucion)##########Solucion Palabra a Adivinar###########
+    #print(solucion)##########Solucion Palabra a Adivinar###########
 
     arriesgo, lista_antigua, i, tablero = constantes_y_print_prewhile(longitud_palabra)
 
     # iteracion entre arriesgo y solucion
     while i != 5 and arriesgo != solucion:
-        print(orden_de_inicio)
         palabra_a_adivinar = validacion_sin_colores(arriesgo, solucion)
         lista_antigua = iteracion_palabra_a_adivinar(palabra_a_adivinar, lista_antigua)
         print_text_while(solucion, orden_de_inicio, lista_antigua, i)
