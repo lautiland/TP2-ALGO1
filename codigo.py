@@ -12,34 +12,39 @@ from setuptools import Command
 # Definimos los puntos ganados o perdidos segun la cantidad de intentos.
 puntaje = [50, 40, 30, 20, 10, -100]
 
+
 def leer_archivo(archivo):
-    #Función encargada de en base a un nombre de un archivo ya abrierto en algun formato de lectura, devolver las lineas del mismo
+    # Función encargada de en base a un nombre de un archivo ya abrierto en algun formato de lectura, devolver las lineas del mismo
     linea = archivo.readline()
     if linea:
         devolver = linea.rstrip("\n").split(",")
     else:
-        devolver = "",""
+        devolver = "", ""
 
     return devolver
 
+
 def cerrar_ventana(ventana):
-    #Funcion encargada de cerrar una ventana especificada
+    # Funcion encargada de cerrar una ventana especificada
     ventana.destroy()
-#Funcion hecha por Lautaro Jovanovics
+
+
+# Funcion hecha por Lautaro Jovanovics
+
 
 def login(jugador):
-    #Funcion maestra del login, que añade la interfaz gráfica al inicio de sesión y registro
+    # Funcion maestra del login, que añade la interfaz gráfica al inicio de sesión y registro
 
     raiz = Tk()
     raiz.config(bg="light grey")
     raiz.title("Login")
 
-    frame1 = Frame(raiz, width=1200, height= 850)
+    frame1 = Frame(raiz, width=1200, height=850)
     frame1.pack()
     raiz.resizable(False, False)
 
     def register():
-        #Funcion que permite registrar un usuario y contraseña
+        # Funcion que permite registrar un usuario y contraseña
 
         ventana_2 = Toplevel()
         ventana_2.title("Register")
@@ -50,28 +55,28 @@ def login(jugador):
         clave2_registro = StringVar()
 
         nombre = Label(ventana_2, text="Usuario:")
-        nombre.grid(row=0, column=0, sticky= "e", padx= 10, pady=10)
+        nombre.grid(row=0, column=0, sticky="e", padx=10, pady=10)
 
         nombre_entry = Entry(ventana_2, textvariable=usuario_registro)
-        nombre_entry.grid(row=0 , column= 1, padx= 10, pady=10)
+        nombre_entry.grid(row=0, column=1, padx=10, pady=10)
         nombre_entry.config(bd=5, relief=GROOVE)
 
         clave1 = Label(ventana_2, text="Clave:")
-        clave1.grid(row=1, column=0, sticky= "e", padx= 10, pady=10)
+        clave1.grid(row=1, column=0, sticky="e", padx=10, pady=10)
 
         clave1_entry = Entry(ventana_2, textvariable=clave1_registro)
-        clave1_entry.grid(row=1, column=1, padx= 10, pady=10)
+        clave1_entry.grid(row=1, column=1, padx=10, pady=10)
         clave1_entry.config(bd=5, relief=GROOVE, show="*")
 
-        clave2 = Label(ventana_2, text="Repitir clave:")
-        clave2.grid(row=2, column=0, sticky= "e", padx= 10, pady=10)
+        clave2 = Label(ventana_2, text="Repetir clave:")
+        clave2.grid(row=2, column=0, sticky="e", padx=10, pady=10)
 
         clave2_entry = Entry(ventana_2, textvariable=clave2_registro)
-        clave2_entry.grid(row=2, column=1, padx= 10, pady=10)
+        clave2_entry.grid(row=2, column=1, padx=10, pady=10)
         clave2_entry.config(bd=5, relief=GROOVE, show="*")
 
-        cerrar_ventana2 = Button(ventana_2, text = "Cerrar", command= ventana_2.destroy)
-        cerrar_ventana2.grid(row = 3, column= 0, padx= 10, pady=10 )
+        cerrar_ventana2 = Button(ventana_2, text="Cerrar", command=ventana_2.destroy)
+        cerrar_ventana2.grid(row=3, column=0, padx=10, pady=10)
         cerrar_ventana2.config(bd=5, relief=GROOVE, bg="light blue", cursor="hand2")
 
         def comprobar_registro():
@@ -85,18 +90,18 @@ def login(jugador):
             estado_reg = True
 
             if clav1_comp_reg != clav2_comp_reg:
-                estado_reg =  False
+                estado_reg = False
                 messagebox.showerror(message="Las contraseñas son diferentes")
 
             if usu_comp_reg and estado_reg:
                 condicion_alpha = True
                 condicion_largo = False
 
-                if 4<=len(usu_comp_reg)<=15:
+                if 4 <= len(usu_comp_reg) <= 15:
                     condicion_largo = True
 
-                for x in usu_comp_reg :
-                    if (x in " #!$%&/()=?¡*¨¨][}{+-.,;:"):
+                for x in usu_comp_reg:
+                    if x in " #!$%&/()=?¡*¨¨][}{+-.,;:":
                         condicion_alpha = False
                 if (not condicion_largo) or (not condicion_alpha):
                     estado_reg = False
@@ -110,7 +115,7 @@ def login(jugador):
                 condicion_guion = False
                 condicion_len = False
 
-                if 8<=len(clav1_comp_reg)<=12:
+                if 8 <= len(clav1_comp_reg) <= 12:
                     condicion_len = True
 
                 for x in clav1_comp_reg:
@@ -125,9 +130,18 @@ def login(jugador):
                     if x.islower():
                         condicion_minuscula = True
 
-                if (not condicion_len) or (not condicion_general) or (not condicion_mayuscula) or (not condicion_minuscula) or (not condicion_numero) or (not condicion_guion):
+                if (
+                    (not condicion_len)
+                    or (not condicion_general)
+                    or (not condicion_mayuscula)
+                    or (not condicion_minuscula)
+                    or (not condicion_numero)
+                    or (not condicion_guion)
+                ):
                     estado_reg = False
-                    messagebox.showerror(message="La contraseña no cumple los requisitos")
+                    messagebox.showerror(
+                        message="La contraseña no cumple los requisitos"
+                    )
 
             while usuario and estado_reg:
                 if usu_comp_reg == usuario:
@@ -138,11 +152,13 @@ def login(jugador):
                     usuario, clave = leer_archivo(archivo)
                     if usu_comp_reg == usuario:
                         estado_reg = False
-                        messagebox.showerror(message="Ya existe un usuario con ese nombre")
+                        messagebox.showerror(
+                            message="Ya existe un usuario con ese nombre"
+                        )
 
             if estado_reg:
 
-                archivo.seek(0,2)
+                archivo.seek(0, 2)
                 archivo.write(usu_comp_reg + "," + clav1_comp_reg + "\n")
 
                 messagebox.showinfo(message="Registro Exitoso!")
@@ -151,8 +167,8 @@ def login(jugador):
 
             archivo.close()
 
-        aceptar = Button(ventana_2, text= "Aceptar", command= comprobar_registro)
-        aceptar.grid(row = 3 , column= 1, padx= 10, pady=10 )
+        aceptar = Button(ventana_2, text="Aceptar", command=comprobar_registro)
+        aceptar.grid(row=3, column=1, padx=10, pady=10)
         aceptar.config(bd=5, relief=GROOVE, bg="light blue", cursor="hand2")
 
     usuario_ingresado = StringVar()
@@ -160,23 +176,23 @@ def login(jugador):
 
     if jugador == 1:
         titulo1 = Label(frame1, text="Primer Jugador")
-        titulo1.grid(row=0, column=1, sticky= "e", padx= 50, pady=10)
+        titulo1.grid(row=0, column=1, sticky="e", padx=50, pady=10)
     elif jugador == 2:
         titulo2 = Label(frame1, text="Segundo Jugador")
-        titulo2.grid(row=0, column=1, sticky= "e", padx= 50, pady=10)
+        titulo2.grid(row=0, column=1, sticky="e", padx=50, pady=10)
 
     nombre = Label(frame1, text="Usuario :")
-    nombre.grid(row=1, column=0, sticky= "e", padx= 10, pady=10)
+    nombre.grid(row=1, column=0, sticky="e", padx=10, pady=10)
 
     nombre_entry = Entry(frame1, textvariable=usuario_ingresado)
-    nombre_entry.grid(row=1 , column= 1, padx= 10, pady=10)
+    nombre_entry.grid(row=1, column=1, padx=10, pady=10)
     nombre_entry.config(bd=5, relief=GROOVE)
 
     clave = Label(frame1, text="Clave :")
-    clave.grid(row=2, column=0, sticky= "e", padx= 10, pady=10)
+    clave.grid(row=2, column=0, sticky="e", padx=10, pady=10)
 
     clave_entry = Entry(frame1, textvariable=clave_ingresada)
-    clave_entry.grid(row=2, column=1, padx= 10, pady=10)
+    clave_entry.grid(row=2, column=1, padx=10, pady=10)
     clave_entry.config(bd=5, relief=GROOVE, show="*")
 
     def comprobar():
@@ -184,54 +200,60 @@ def login(jugador):
         global user
 
         archivo = open("usuarios.csv", "rt")
-        
+
         usu_comp_log = usuario_ingresado.get()
         clav_comp_log = clave_ingresada.get()
 
         estado = False
 
         usuario, clave = leer_archivo(archivo)
-        
+
         while usuario and clave and not estado:
 
             if usu_comp_log == usuario and clav_comp_log == clave:
                 estado = True
 
-            while (usuario and clave and not estado) and ((usu_comp_log != usuario) or (clav_comp_log != clave)):
+            while (usuario and clave and not estado) and (
+                (usu_comp_log != usuario) or (clav_comp_log != clave)
+            ):
                 usuario, clave = leer_archivo(archivo)
                 if (usu_comp_log == usuario) and (clav_comp_log == clave):
                     estado = True
-                
 
         if estado and usu_comp_log and clav_comp_log:
             messagebox.showinfo(message="Ingresado Exitoso!")
             user = usuario
             cerrar_ventana(frame1)
             cerrar_ventana(raiz)
-                
-        else: 
+
+        else:
             messagebox.showerror(message="Usuario o clave incorrectos")
 
             user = ""
 
-        
         archivo.close()
 
-    boton1 = Button(frame1, text=" Ingresar ", command= comprobar)
-    boton1.grid(row = 3, column = 0, padx= 10, pady=10 )
+    boton1 = Button(frame1, text=" Ingresar ", command=comprobar)
+    boton1.grid(row=3, column=0, padx=10, pady=10)
     boton1.config(bd=5, relief=GROOVE, bg="light blue", cursor="hand2")
 
-    boton2 = Button(frame1, text="Registrarse",command = register)
-    boton2.grid(row = 3, column = 1, padx= 10, pady=10)
+    boton2 = Button(frame1, text="Registrarse", command=register)
+    boton2.grid(row=3, column=1, padx=10, pady=10)
     boton2.config(bd=5, relief=GROOVE, bg="light blue", cursor="hand2")
 
     raiz.mainloop()
+
+
 # Funcion hecha por Jonathan Pistonesi y Lautaro Jovanovics
+
 
 def color_de_letra(letra, color):
     # Utiliza el archivo utiles.py para obtener los colores correspondientes a la validacion de la letra.1
     return utiles.obtener_color(color) + letra.upper() + utiles.obtener_color("Defecto")
+
+
 # Funcion hecha por Pedro Miguel
+
 
 def verificar_arriesgo(longitud_palabra):
     # Se encarga de validar que el ingreso de la palabra cumpla con los requisitos, reemplazar las tildes, y minusculas.2
@@ -252,7 +274,10 @@ def verificar_arriesgo(longitud_palabra):
     for a, b in reemplazo:
         arriesgo = arriesgo.replace(a, b)
     return arriesgo
+
+
 # Funcion hecha por Pedro Miguel
+
 
 def verificar_amarillas(arriesgo, solucion):
     # Funcion encargada de comprobar que la letra exista en la palabra evitando repeticiones, si es que no esta en la posicion correcta.1
@@ -269,7 +294,10 @@ def verificar_amarillas(arriesgo, solucion):
     for i in letras_amarillas:
         letras_amarillas[i] = solucion.count(i) - letras_verdes[i]
     return letras_amarillas
+
+
 # Funcion hecha por Pedro Miguel
+
 
 def validacion_letra(arriesgo, solucion):
     # Usando funciones anteriores, asigna los colores correspondientes a cada letra.1
@@ -284,7 +312,10 @@ def validacion_letra(arriesgo, solucion):
         else:
             output.append(color_de_letra(i, "GrisOscuro"))
     return output
+
+
 # Funcion hecha por Pedro Miguel
+
 
 def iteracion_palabra_a_adivinar(lista_nueva, lista_antigua):
     # Funcion encargada de guardar las letras acertadas entre intentos.
@@ -295,7 +326,10 @@ def iteracion_palabra_a_adivinar(lista_nueva, lista_antigua):
         else:
             agregarse.append(j)
     return agregarse
+
+
 # Funcion hecha por Nicolas Serrudo y Jonathan Pistonesi
+
 
 def validacion_sin_colores(arriesgo, solucion):
     # Funcion que compara el arriesgo con la solucion, validando las letras pero sin color.
@@ -306,7 +340,10 @@ def validacion_sin_colores(arriesgo, solucion):
         else:
             output.append("?")
     return output
+
+
 # Funcion hecha por Nicolas Serrudo y Jonathan Pistonesi
+
 
 def volver_a_jugar(
     si_o_no,
@@ -342,12 +379,14 @@ def volver_a_jugar(
             partidas,
         )
     elif si_o_no in "Nn":
-        ordenado = sorted(
-            aciertos_intentos.items(), key=lambda x: x[1], reverse=True
-        )
+        ordenado = sorted(aciertos_intentos.items(), key=lambda x: x[1], reverse=True)
 
-        print(f"El jugador {ordenado[0][0]} tiene {ordenado[0][1][0]} aciertos y {ordenado[0][1][1]} intentos")
-        print(f"El jugador {ordenado[1][0]} tiene {ordenado[1][1][0]} aciertos y {ordenado[1][1][1]} intentos")
+        print(
+            f"El jugador {ordenado[0][0]} tiene {ordenado[0][1][0]} aciertos y {ordenado[0][1][1]} intentos"
+        )
+        print(
+            f"El jugador {ordenado[1][0]} tiene {ordenado[1][1][0]} aciertos y {ordenado[1][1][1]} intentos"
+        )
         j = 0
         for j in range(len(ordenado)):
             partidas.write(
@@ -375,6 +414,8 @@ def volver_a_jugar(
             print(
                 f"\nAmbos jugadores han empatado con un total de {orden_de_inicio[0][1]} puntos."
             )
+
+
 # Funcion hecha por Pedro Perez
 
 # imprime en pantalla los turnos, el intento de palabra, y solucion
@@ -386,6 +427,7 @@ def print_text_while(solucion, orden_de_inicio, lista_antigua, i):
         orden_de_inicio[0], orden_de_inicio[1] = orden_de_inicio[1], orden_de_inicio[0]
         print(f"\nAhora es el turno de {orden_de_inicio[0][0]}")
         print("Palabra a adivinar:", *lista_antigua)
+
 
 # funcion que retorna constantes y un print iteracion inicio del juego
 def constantes_y_print_prewhile(longitud_palabra):
@@ -412,6 +454,7 @@ def constantes_y_print_prewhile(longitud_palabra):
     i = 0
     return arriesgo, lista_antigua, i, tablero
 
+
 # Asigna los puntos a los jugadores
 def asignar_puntos(puntos_obtenidos, orden_de_inicio):
     if puntos_obtenidos == -100:
@@ -421,7 +464,10 @@ def asignar_puntos(puntos_obtenidos, orden_de_inicio):
         orden_de_inicio[0][1] += puntos_obtenidos
         orden_de_inicio[1][1] -= puntos_obtenidos
     return orden_de_inicio
+
+
 # Funcion hecha por Pedro Miguel
+
 
 def leer_linea_archivo(archivo, default):
     linea = archivo.readline()
@@ -432,62 +478,77 @@ def leer_linea_archivo(archivo, default):
         palabras.append(lista[i].lower().lstrip("¡¿-_").rstrip(".;:-_),?!"))
         i += 1
     return palabras if palabras[0] != "" else default
+
+
 # Funcion hecha por Pedro Miguel
+
 
 def leer_linea_csv(archivo, default):
     linea = archivo.readline()
     defecto_o_configuracion = True
-    if linea == "\n" or linea == "" or linea ==" ":
-       linea = default
-       defecto_o_configuracion = False
-    return linea,defecto_o_configuracion
+    if linea == "\n" or linea == "" or linea == " ":
+        linea = default
+        defecto_o_configuracion = False
+    return linea, defecto_o_configuracion
+
+
 # Funcion hecha por Pedro Miguel
+
 
 def obtener_config(archivoConfig):
     archivoConfig.seek(0)
 
-    linea,defecto_o_configuracion = leer_linea_csv(archivoConfig, "longitud_palabra_secreta,5")
+    linea, defecto_o_configuracion = leer_linea_csv(
+        archivoConfig, "longitud_palabra_secreta,5"
+    )
     aux, longitud_palabra = linea.strip("\n").split(",")
-    if not(longitud_palabra) or defecto_o_configuracion == False:
+    if not (longitud_palabra) or defecto_o_configuracion == False:
         longitud_palabra = 5
         print("---- Longitud de palabra, valor por defecto")
     elif longitud_palabra:
         print("---- Longitud de palabra, valor por configuracion")
 
-
-    linea,defecto_o_configuracion = leer_linea_csv(archivoConfig, "maximo_partidas,5")
+    linea, defecto_o_configuracion = leer_linea_csv(archivoConfig, "maximo_partidas,5")
     aux, maximo_partidas = linea.strip("\n").split(",")
-    if not(maximo_partidas) or defecto_o_configuracion == False:
+    if not (maximo_partidas) or defecto_o_configuracion == False:
         maximo_partidas = 5
         print("---- Maxima cantidad de partidas, valor por defecto")
     elif maximo_partidas:
         print("---- Maxima cantidad de partidas, valor por configuracion")
 
-
-    linea,defecto_o_configuracion = leer_linea_csv(archivoConfig, "reiniciar_archivo,False")
+    linea, defecto_o_configuracion = leer_linea_csv(
+        archivoConfig, "reiniciar_archivo,False"
+    )
     aux, reiniciar_archivo_partidas = linea.strip("\n").split(",")
 
-    if (reiniciar_archivo_partidas == False )and defecto_o_configuracion == False:
+    if (reiniciar_archivo_partidas == False) and defecto_o_configuracion == False:
         reiniciar_archivo_partidas = "a"
-        valor_reinicio= "Deshabilitado"
+        valor_reinicio = "Deshabilitado"
         print("---- Reinicio arhivo registro de partidas, valor por defecto")
         print("=============================================")
-    elif reiniciar_archivo_partidas=="False" and defecto_o_configuracion == True:
+    elif reiniciar_archivo_partidas == "False" and defecto_o_configuracion == True:
         reiniciar_archivo_partidas = "a"
-        valor_reinicio= "Deshabilitado"
+        valor_reinicio = "Deshabilitado"
         print("---- Reinicio archivo registro de partidas, valor por configuracion")
         print("=============================================")
     elif (reiniciar_archivo_partidas) and defecto_o_configuracion == True:
         reiniciar_archivo_partidas = "w"
-        valor_reinicio= "Habilitado"
+        valor_reinicio = "Habilitado"
         print("---- Reinicio archivo registro de partidas, valor por configuracion")
         print("=============================================")
-    
-    print("Longitud de palabras: {} - Maximo de partidas de: {} - El reinicio del archivo registro de partidas fue {}".format(longitud_palabra, maximo_partidas,valor_reinicio))
+
+    print(
+        "Longitud de palabras: {} - Maximo de partidas de: {} - El reinicio del archivo registro de partidas fue {}".format(
+            longitud_palabra, maximo_partidas, valor_reinicio
+        )
+    )
     print("---------------------------------------------")
 
     return int(longitud_palabra), int(maximo_partidas), reiniciar_archivo_partidas
+
+
 # Funcion hecha por Nicolas Serrudo y Pedro Perez
+
 
 def obtener_palabras(archivo1, archivo2, archivo3, archivoNuevo, longitud_palabra):
     archivo1.seek(0)
@@ -554,7 +615,10 @@ def obtener_palabras(archivo1, archivo2, archivo3, archivoNuevo, longitud_palabr
             + "\n"
         )
     return lista_palabras
+
+
 # Funcion hecha por Pedro Miguel
+
 
 def fiuble(
     orden_de_inicio,
@@ -577,9 +641,9 @@ def fiuble(
     solucion = solucion.upper()
     reemplazo = (("Á", "A"), ("É", "E"), ("Í", "I"), ("Ó", "O"), ("Ú", "U"))
     for a, b in reemplazo:
-        solucion = solucion.replace(a, b)   
+        solucion = solucion.replace(a, b)
 
-    #print(solucion)##########Solucion Palabra a Adivinar###########
+    # print(solucion)##########Solucion Palabra a Adivinar###########
 
     arriesgo, lista_antigua, i, tablero = constantes_y_print_prewhile(longitud_palabra)
 
@@ -670,11 +734,14 @@ def fiuble(
             aciertos_intentos,
             partidas,
         )
+
+
 # Funcion hecha por Pedro Miguel, Nicolas Serrudo, Diego Lima, Lautaro Jovanovics, Pedro Perez y Jonathan Pistonesi.
+
 
 def main():
     # Funcion principal, encargada de tomar los nombres de los jugadores, mezclarlos, y luego ejecutar el juego.
-    
+
     try:
         archivo = open("usuarios.csv", "r")
         archivo.close()
@@ -727,8 +794,9 @@ def main():
             partidas,
         )
 
+
 main()
 
-#-----------------------------------------------------------------------------------------------------------------#
-#------- Modularizacion hecha por Lautaro Jovanovics, Nicolas Serrudo , Diego Lima y Jonathan Pistonesi.----------#
-#-----------------------------------------------------------------------------------------------------------------#
+# -----------------------------------------------------------------------------------------------------------------#
+# ------- Modularizacion hecha por Lautaro Jovanovics, Nicolas Serrudo , Diego Lima y Jonathan Pistonesi.----------#
+# -----------------------------------------------------------------------------------------------------------------#
