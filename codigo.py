@@ -21,11 +21,10 @@ def leer_archivo(archivo):
         devolver = "",""
 
     return devolver
-
 def cerrar_ventana(ventana):
     #Funcion encargada de cerrar una ventana especificada
     ventana.destroy()
-#Funcion hecha por Lautaro Jovanovics
+# Funcion hecha por Lautaro Jovanovics
 
 def login(jugador):
     #Funcion maestra del login, que añade la interfaz gráfica al inicio de sesión y registro
@@ -151,9 +150,13 @@ def login(jugador):
 
             archivo.close()
 
+        def register_enter(event):
+            comprobar_registro()
+
         aceptar = Button(ventana_2, text= "Aceptar", command= comprobar_registro)
         aceptar.grid(row = 3 , column= 1, padx= 10, pady=10 )
         aceptar.config(bd=5, relief=GROOVE, bg="light blue", cursor="hand2")
+        clave2_entry.bind("<Return>", register_enter)
 
     usuario_ingresado = StringVar()
     clave_ingresada = StringVar()
@@ -217,9 +220,13 @@ def login(jugador):
         
         archivo.close()
 
+    def login_enter(event):
+        comprobar()
+
     boton1 = Button(frame1, text=" Ingresar ", command= comprobar)
     boton1.grid(row = 3, column = 0, padx= 10, pady=10 )
     boton1.config(bd=5, relief=GROOVE, bg="light blue", cursor="hand2")
+    clave_entry.bind("<Return>", login_enter)
 
     boton2 = Button(frame1, text="Registrarse",command = register)
     boton2.grid(row = 3, column = 1, padx= 10, pady=10)
@@ -684,8 +691,9 @@ def main():
 
     login(1)
     jugador_1 = user
-    login(2)
-    jugador_2 = user
+    if user:
+        login(2)
+        jugador_2 = user
 
     if jugador_1 and jugador_2:
         config = open("configuracion.csv", "r+")
